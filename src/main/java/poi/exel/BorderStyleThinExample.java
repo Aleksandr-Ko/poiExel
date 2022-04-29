@@ -9,17 +9,21 @@ import java.io.OutputStream;
 
 public class BorderStyleThinExample {
     public static void main(String... args) {
+
         Workbook workbook = new HSSFWorkbook();
-        Sheet sheet = workbook.createSheet("sample");
-        sheet.setColumnWidth(1, 6000);
-        Row row = sheet.createRow(1);
-        row.setHeightInPoints(100);
-        Cell cell = row.createCell(1);
-        cell.setCellValue("SimpleSolution.dev");
+        Sheet sheet = workbook.createSheet("sample");    // создаем лист
+
+        sheet.setColumnWidth(1, 6000);           // устанавливаем ширину колонки выбраной ячейки
+
+        Row row = sheet.createRow(1);                     // берем ряд номер
+        row.setHeightInPoints(100);                               // устанавливаем высоту ряда
+
+        Cell cell = row.createCell(1);                    // берем конкретную ячейку
+        cell.setCellValue("SimpleSolution.dev");                 // заносим данные
 
         // Стиль ячейки с границами и цветом границы
         CellStyle style = workbook.createCellStyle();
-        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderBottom(BorderStyle.THICK);
         style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
         style.setBorderLeft(BorderStyle.THIN);
         style.setLeftBorderColor(IndexedColors.BLACK.getIndex());

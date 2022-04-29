@@ -22,15 +22,21 @@ public class Begin {
         Sheet sheet = book.createSheet("Birthdays");
 
         // Нумерация начинается с нуля
-        Row row = sheet.createRow(0);
+        Row row0 = sheet.createRow(0);
 
         // Мы запишем имя и дату в два столбца
         // имя будет String, а дата рождения --- Date,
         // формата dd.mm.yyyy
-        Cell name = row.createCell(0);
-        name.setCellValue("John");
 
-        Cell birthdate = row.createCell(1);
+        Font font = book.createFont();
+        Cell name = row0.createCell(0);
+
+        CellStyle cellStyle = book.createCellStyle();   // создаем стиль ячейки
+        cellStyle.setRotation((short) 90);              // задаем стиль ячейки с разворотом
+        name.setCellStyle(cellStyle);                   // применяем созданый стиль
+        name.setCellValue("John");                      // обавляем текст
+
+        Cell birthdate = row0.createCell(1);
 
         DataFormat format = book.createDataFormat();
         CellStyle dateStyle = book.createCellStyle();
@@ -42,7 +48,7 @@ public class Begin {
         birthdate.setCellValue(new Date(110, 10, 10));
 
         // Меняем размер столбца
-        sheet.autoSizeColumn(1);
+        sheet.autoSizeColumn(1); // Регулирует ширину столбца в соответствии с содержимым (делать в конце обработки)
 
         // Записываем всё в файл
         book.write(new FileOutputStream(file));

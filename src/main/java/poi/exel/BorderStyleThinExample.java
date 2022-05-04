@@ -13,7 +13,7 @@ public class BorderStyleThinExample {
         Workbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet("sample");    // создаем лист
 
-        sheet.setColumnWidth(1, 6000);           // устанавливаем ширину колонки выбраной ячейки
+        sheet.setColumnWidth(1, 6000);           // устанавливаем ширину колонки выбранной ячейки
 
         Row row = sheet.createRow(1);                     // берем ряд номер
         row.setHeightInPoints(100);                               // устанавливаем высоту ряда

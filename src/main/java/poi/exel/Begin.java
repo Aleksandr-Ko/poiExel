@@ -33,8 +33,8 @@ public class Begin {
 
         CellStyle cellStyle = book.createCellStyle();   // создаем стиль ячейки
         cellStyle.setRotation((short) 90);              // задаем стиль ячейки с разворотом
-        name.setCellStyle(cellStyle);                   // применяем созданый стиль
-        name.setCellValue("John");                      // обавляем текст
+        name.setCellStyle(cellStyle);                   // применяем созданный стиль
+        name.setCellValue("John");                      // объявляем текст
 
         Cell birthdate = row0.createCell(1);
 

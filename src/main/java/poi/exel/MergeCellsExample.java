@@ -16,16 +16,19 @@ public class MergeCellsExample {
 
         Workbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet("merge-cells-example");
-        Row row = sheet.createRow(0);
-        Cell cell = row.createCell(0);
-        cell.setCellValue("SimpleSolution.dev");
-
         sheet.addMergedRegion(new CellRangeAddress(
                 0, //индекс первой строки в отсчете от нуля
-               0, //индекс последней строки в отсчете от нуля
+                0, //индекс последней строки в отсчете от нуля
                 0, //индекс первого столбца в отсчете от нуля
                 13  //индекс последнего столбца в отсчете от нуля
         ));
+
+        Row row = sheet.createRow(0);
+
+        Cell cell = row.createCell(0);
+        cell.setCellValue("SimpleSolution.dev");
+
+
 
         try (OutputStream fileOut = new FileOutputStream("merge-cells.xls")) {
             workbook.write(fileOut);

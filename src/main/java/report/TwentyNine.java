@@ -19,19 +19,20 @@ public class TwentyNine {
 
     // формирование таблицы
     public void report(String file) throws IOException {
-
+        // создание документа
         Workbook book = new HSSFWorkbook();
-
+        // создаём лист в документе
         Sheet sheet = book.createSheet("ОПИ ДЛЯ ОКС");
-        sheet.setMargin(Sheet.LeftMargin, 0.4 /* inches */);
-        sheet.setMargin(Sheet.RightMargin, 0.4 /* inches */);
-
-        // ориентация листа для печати (альбомная)
+        // задаем отступ от края листа для печати
+        sheet.setMargin(Sheet.TopMargin, 0.4);
+        sheet.setMargin(Sheet.BottomMargin, 0.4);
+        sheet.setMargin(Sheet.LeftMargin, 0.4 );
+        sheet.setMargin(Sheet.RightMargin, 0.4 );
+        // устанавливаем ориентацию листа для печати (альбомная)
         PrintSetup print = sheet.getPrintSetup();
         print.setLandscape(true);
         // перенос рядов на каждый лист
-        sheet.setRepeatingRows(CellRangeAddress.valueOf("6"));
-
+        sheet.setRepeatingRows(CellRangeAddress.valueOf("7"));
         // Заполнить заголовок
         header(book, sheet, fontStyle(book));
         nameColumn(book, sheet, fontStyle(book));
@@ -45,14 +46,8 @@ public class TwentyNine {
                 BorderStyle.THIN, BorderExtent.ALL);
         propertyTemplate.applyBorders(sheet);
 
-
-        // автовыравнивание ширины колонок
-        for (int i = 0; i < 15; i++) {
-            sheet.autoSizeColumn(i, true);
-        }
-
-        // автовыравнивание высоты колонок
-        sheetWeight(book, sheet);
+        // автовыравнивание высоты ряда для данных (производить один раз перед сохранением!)
+        rowDataHeight(sheet);
 
 
         // Сохранение документа
@@ -76,20 +71,19 @@ public class TwentyNine {
         Row row2 = sheet.createRow(2);
         sheet.addMergedRegionUnsafe(new CellRangeAddress(2, 2, 0, 6));
         initCell(row2.createCell(0), "Наименование", boldStyle);
-
-
         sheet.addMergedRegionUnsafe(new CellRangeAddress(2, 2, 7, 13));
         initCell(row2.createCell(7), "Код (шифр)", boldStyle);
 
-
         Row row3 = sheet.createRow(3);
         sheet.addMergedRegion(new CellRangeAddress(3, 3, 0, 6));
-        initCell(row3.createCell(0), "", boldStyle);                                                          // нужно уточнить что сюда вставлять?
+        initCell(row3.createCell(0), "", boldStyle);                                                         // нужно уточнить что сюда вставлять?
         sheet.addMergedRegion(new CellRangeAddress(3, 3, 7, 13));
-        initCell(row3.createCell(7), "", boldStyle);                                                          // нужно уточнить что сюда вставлять?
+        initCell(row3.createCell(7), "", boldStyle);                                                         // нужно уточнить что сюда вставлять?
 
         Row row4 = sheet.createRow(4);
+        row4.setHeight((short)(2*228));
         sheet.addMergedRegion(new CellRangeAddress(4, 4, 0, 13));
+
     }
 
     private void nameColumn(Workbook book, Sheet sheet, Font font) {
@@ -99,34 +93,62 @@ public class TwentyNine {
         verStyle.setRotation((short) 90);
 
         Row row6 = sheet.createRow(5);
-
+        row6.setHeight((short) (3*228));                                                                                // устанавливаем высоту
+        // слияние ячеек
         sheet.addMergedRegion(new CellRangeAddress(5, 5, 0, 1));
         sheet.addMergedRegion(new CellRangeAddress(5, 6, 2, 2));
         sheet.addMergedRegion(new CellRangeAddress(5, 5, 3, 4));
         sheet.addMergedRegion(new CellRangeAddress(5, 5, 5, 8));
         sheet.addMergedRegion(new CellRangeAddress(5, 5, 9, 13));
-
-        initCell(row6.createCell(0), "Субподрядный договор на\nдобычу ОПИ, с видом работ\n«добыча ОПИ на карьере»", horStyle);
-        initCell(row6.createCell(2), "Контрагент\n(наименование\nорганизации)", horStyle);
+        // добавление значения в ячейку
+        initCell(row6.createCell(0), "Субподрядный договор на добычу ОПИ, с видом работ «добыча ОПИ на карьере»", horStyle);
+        initCell(row6.createCell(2), "Контрагент (наименование организации)", horStyle);
+        sheet.setColumnWidth(2,14*256);                                                                // устанавливаем ширину
         initCell(row6.createCell(3), "Карьер", horStyle);
         initCell(row6.createCell(5), "ОКС", horStyle);
         initCell(row6.createCell(9), "Сводка", horStyle);
 
         Row row7 = sheet.createRow(6);
+        row7.setHeight((short) (10*228));
 
         initCell(row7.createCell(0),"Номер договора", verStyle);
+        sheet.setColumnWidth(0,13*256);
+
         initCell(row7.createCell(1),"Дата договора", verStyle);
+        sheet.setColumnWidth(1,13*256);
+
         initCell(row7.createCell(3),"Субъект РФ", verStyle);
+        sheet.setColumnWidth(3,8*256);
+
         initCell(row7.createCell(4),"Наименование\nкарьера", verStyle);
+        sheet.setColumnWidth(4,8*256);
+
         initCell(row7.createCell(5),"Номер этапа\nстроительства", verStyle);
+        sheet.setColumnWidth(5,8*256);
+
         initCell(row7.createCell(6),"Наименование этапа\nстроительства", verStyle);
+        sheet.setColumnWidth(6,8*256);
+
         initCell(row7.createCell(7),"Объект капитального\nстроительства", verStyle);
+        sheet.setColumnWidth(7,8*256);
+
         initCell(row7.createCell(8),"Код (шифр)", verStyle);
+        sheet.setColumnWidth(8,8*256);
+
         initCell(row7.createCell(9),"Дата, за которую\nподается сводка", verStyle);
+        sheet.setColumnWidth(9,8*256);
+
         initCell(row7.createCell(10),"Вид работ на ОКС,\nдля которых\nдоставлено ОПИ", verStyle);
+        sheet.setColumnWidth(10,12*256);
+
         initCell(row7.createCell(11),"ОПИ (Материал)", verStyle);
+        sheet.setColumnWidth(11,8*256);
+
         initCell(row7.createCell(12),"Объем всего, куб.м", verStyle);
+        sheet.setColumnWidth(12,8*256);
+
         initCell(row7.createCell(13),"Объем всего, тн", verStyle);
+        sheet.setColumnWidth(13,8*256);
 
 
         Row row8 = sheet.createRow(7);
@@ -137,7 +159,7 @@ public class TwentyNine {
 
     private CellStyle cellStyle(Workbook book, Font font) {
         CellStyle style = book.createCellStyle();
-        style.setWrapText(true);                                                                                    // перенос текста
+        style.setWrapText(true);                                                                                        // перенос текста
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         style.setFont(font);
@@ -162,13 +184,13 @@ public class TwentyNine {
         cell.setCellStyle(style);
     }
 
-    private void sheetWeight(Workbook book,Sheet sheet) {
-        for(int i = 1; i < sheet.getLastRowNum(); i ++) {
+    private void rowDataHeight(Sheet sheet) {
+        for(int i = 8; i < sheet.getLastRowNum(); i ++) {
             Row row = sheet.getRow(i);
             int enterCnt = 0;
             int colIdxOfMaxCnt = 1;
             for(int j = 0; j < row.getLastCellNum(); j ++) {
-                int rwsTemp = row.getCell(j).toString().split("\n").length;
+                int rwsTemp = row.getCell(j).toString().split(" ").length;
                 if (rwsTemp > enterCnt) {
                     enterCnt = rwsTemp;
                     colIdxOfMaxCnt = j;
@@ -176,17 +198,6 @@ public class TwentyNine {
             }
             row.setHeight((short)(enterCnt * 228));
         }
-
     }
 
-    public final short EXCEL_COLUMN_WIDTH_FACTOR = 256;
-    public final int UNIT_OFFSET_LENGTH = 7;
-    public final int[] UNIT_OFFSET_MAP = new int[]{0, 36, 73, 109, 146, 182, 219};
-
-    // https://fooobar.com/questions/155344/setting-column-width-in-apache-poi
-    public short pixel2WidthUnits(int pxs) {
-        short widthUnits = (short) (EXCEL_COLUMN_WIDTH_FACTOR * (pxs / UNIT_OFFSET_LENGTH));
-        widthUnits += UNIT_OFFSET_MAP[(pxs % UNIT_OFFSET_LENGTH)];
-        return widthUnits;
-    }
 }

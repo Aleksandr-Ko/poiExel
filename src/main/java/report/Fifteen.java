@@ -24,9 +24,12 @@ public class Fifteen {
         Workbook book = new HSSFWorkbook();
         // создаём лист в документе
         Sheet sheet = book.createSheet("Сводка ОПИ для ОКС");
+
         // верхний колонтитул
+        // TODO: возможно это лишняя запись
         sheet.getHeader().setCenter(HSSFHeader.font("Arial", "bold")
-                + HSSFHeader.fontSize((short) 12) + "ФОРМА ЕЖЕДНЕВНОЙ СВОДКИ О ПОСТАВКЕ ОПИ ДЛЯ ОКС");
+                + HSSFHeader.fontSize((short) 12) + "ЕЖЕДНЕВНАЯ СВОДКА О ПОСТАВКЕ ОПИ ДЛЯ ОКС");
+
         // задаем отступ от края листа для печати
         sheet.setMargin(Sheet.BottomMargin, 0.4);
         sheet.setMargin(Sheet.LeftMargin, 0.4 );

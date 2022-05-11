@@ -12,8 +12,8 @@ import java.io.IOException;
 public class Fourteen {
     public static void main(String[] args) throws IOException {
 
-        Fourteen te = new Fourteen();
-        te.createReport("14.xls");
+        Fourteen fourteen = new Fourteen();
+        fourteen.createReport("14.xls");
     }
 
     // формирование таблицы
@@ -133,6 +133,11 @@ public class Fourteen {
         }
     }
 
+    private void initCell(Cell cell, String val, CellStyle style) {
+        cell.setCellValue(val);
+        cell.setCellStyle(style);
+    }
+
     private CellStyle cellStyle(Workbook book, Font font) {
         CellStyle style = book.createCellStyle();
         style.setWrapText(true);                                                                                        // перенос текста
@@ -147,11 +152,6 @@ public class Fourteen {
         font.setFontName("Arial");
         font.setFontHeight((short) (9*20));                                                                                //размер шрифта -> 9 = (9 / (1/20))
         return font;
-    }
-
-    private void initCell(Cell cell, String val, CellStyle style) {
-        cell.setCellValue(val);
-        cell.setCellStyle(style);
     }
 
 }

@@ -22,9 +22,12 @@ public class Fourteen {
         Workbook book = new HSSFWorkbook();
         // создаём лист в документе
         Sheet sheet = book.createSheet("Сводка работ на карьере");
+
         // верхний колонтитул
+        // TODO: возможно это лишняя запись
         sheet.getHeader().setCenter(HSSFHeader.font("Arial", "bold")
-                + HSSFHeader.fontSize((short) 12) + "ФОРМА ЕЖЕДНЕВНОЙ СВОДКИ РЕЗУЛЬТАТОВ РАБОТ НА КАРЬЕРЕ");
+                + HSSFHeader.fontSize((short) 12) + "ЕЖЕДНЕВНАЯ СВОДКА РЕЗУЛЬТАТОВ РАБОТ НА КАРЬЕРЕ");
+
         // задаем отступ от края листа для печати
         sheet.setMargin(Sheet.BottomMargin, 0.4);
         sheet.setMargin(Sheet.LeftMargin, 0.4 );

@@ -46,9 +46,7 @@ public class Eleven {
         // отображение границ таблицы
         PropertyTemplate propertyTemplate = new PropertyTemplate();
         // TODO -> заменить рисование границ на всю область данных
-        propertyTemplate.drawBorders(new CellRangeAddress(0, 4, 0, 9),
-                BorderStyle.THIN, BorderExtent.ALL);
-
+        propertyTemplate.drawBorders(new CellRangeAddress(0, 4, 0, 9),BorderStyle.THIN, BorderExtent.ALL);
         propertyTemplate.applyBorders(sheet);
 
         // Сохранение документа

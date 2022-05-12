@@ -47,11 +47,9 @@ public class Fifteen {
 
         // отображение границ таблицы
         PropertyTemplate propertyTemplate = new PropertyTemplate();
-        propertyTemplate.drawBorders(new CellRangeAddress(0, 2, 0, 13),
-                BorderStyle.THIN, BorderExtent.ALL);
+        propertyTemplate.drawBorders(new CellRangeAddress(0, 2, 0, 13),BorderStyle.THIN, BorderExtent.ALL);
         // TODO -> заменить рисование границ на всю область данных
-        propertyTemplate.drawBorders(new CellRangeAddress(4, 6, 0, 13),
-                BorderStyle.THIN, BorderExtent.ALL);
+        propertyTemplate.drawBorders(new CellRangeAddress(4, 6, 0, 13),BorderStyle.THIN, BorderExtent.ALL);
         propertyTemplate.applyBorders(sheet);
 
         // Сохранение документа

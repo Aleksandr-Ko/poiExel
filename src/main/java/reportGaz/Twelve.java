@@ -42,13 +42,10 @@ public class Twelve {
 
         // отображение границ таблицы
         PropertyTemplate propertyTemplate = new PropertyTemplate();
-        propertyTemplate.drawBorders(new CellRangeAddress(0, 10, 0, 15),
-                BorderStyle.THIN, BorderExtent.ALL);
+        propertyTemplate.drawBorders(new CellRangeAddress(0, 10, 0, 15),BorderStyle.THIN, BorderExtent.ALL);
         // TODO -> заменить рисование границ на всю область данных
-        propertyTemplate.drawBorders(new CellRangeAddress(12, 14, 11, 16),
-                BorderStyle.THIN, BorderExtent.ALL);
-        propertyTemplate.drawBorders(new CellRangeAddress(16, 19, 0, 17),
-                BorderStyle.THIN, BorderExtent.ALL);
+        propertyTemplate.drawBorders(new CellRangeAddress(12, 14, 11, 16),BorderStyle.THIN, BorderExtent.ALL);
+        propertyTemplate.drawBorders(new CellRangeAddress(16, 19, 0, 17),BorderStyle.THIN, BorderExtent.ALL);
         propertyTemplate.applyBorders(sheet);
 
         // Сохранение документа

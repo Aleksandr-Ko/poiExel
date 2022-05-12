@@ -1,4 +1,4 @@
-package report;
+package reportGaz;
 
 import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -39,7 +39,6 @@ public class Twelve {
         header(book, sheet);
         headerTwo(book, sheet);
         nameColumn(book, sheet);
-
 
         // отображение границ таблицы
         PropertyTemplate propertyTemplate = new PropertyTemplate();

@@ -30,8 +30,8 @@ public class Fourteen {
 
         // задаем отступ от края листа для печати
         sheet.setMargin(Sheet.BottomMargin, 0.4);
-        sheet.setMargin(Sheet.LeftMargin, 0.4 );
-        sheet.setMargin(Sheet.RightMargin, 0.4 );
+        sheet.setMargin(Sheet.LeftMargin, 0.4);
+        sheet.setMargin(Sheet.RightMargin, 0.4);
         // устанавливаем ориентацию листа для печати (альбомная)
         sheet.getPrintSetup().setLandscape(true);
         // выравнивание по центру листа
@@ -40,7 +40,6 @@ public class Fourteen {
         sheet.setRepeatingRows(CellRangeAddress.valueOf("7"));
 
         // Наполнение документа
-
         nameColumn(book, sheet, fontStyle(book));
 //        dataColumn(book, sheet, fontStyle(book));
 
@@ -64,78 +63,66 @@ public class Fourteen {
         CellStyle horStyle = cellStyle(book, font);
 
         Row row0 = sheet.createRow(0);
-        sheet.addMergedRegionUnsafe(new CellRangeAddress(0, 0, 0, 9));
-        initCell(row0.createCell(0), "Инвестпроект", horStyle);
-
         Row row1 = sheet.createRow(1);
-        sheet.addMergedRegionUnsafe(new CellRangeAddress(1, 1, 0, 4));
-        initCell(row1.createCell(0), "Наименование", horStyle);
-        sheet.addMergedRegionUnsafe(new CellRangeAddress(1, 1, 5, 9));
-        initCell(row1.createCell(5), "Код (шифр)", horStyle);
-
         Row row2 = sheet.createRow(2);
-        sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, 4));
-        initCell(row2.createCell(0), "", horStyle);                                                         // нужно уточнить что сюда вставлять?
-        sheet.addMergedRegion(new CellRangeAddress(2, 2, 5, 9));
-        initCell(row2.createCell(7), "", horStyle);                                                         // нужно уточнить что сюда вставлять?
-
         Row row3 = sheet.createRow(3);
-        row3.setHeight((short)(2*256));
-        sheet.addMergedRegion(new CellRangeAddress(3, 3, 0, 9));
-
         Row row4 = sheet.createRow(4);
-        row4.setHeight((short) (4*256));
+        Row row5 = sheet.createRow(5);
+        Row row6 = sheet.createRow(6);
 
+        row3.setHeight((short) (2 * 256));
+        row4.setHeight((short) (4 * 256));
+        row5.setHeight((short) (5 * 228));
+
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 9));
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 4));
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 5, 9));
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, 4));
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 5, 9));
+
+        sheet.addMergedRegion(new CellRangeAddress(3, 3, 0, 9));
         sheet.addMergedRegion(new CellRangeAddress(4, 4, 0, 1));
         sheet.addMergedRegion(new CellRangeAddress(4, 5, 2, 2));
         sheet.addMergedRegion(new CellRangeAddress(4, 4, 3, 4));
         sheet.addMergedRegion(new CellRangeAddress(4, 4, 5, 9));
 
+        initCell(row0.createCell(0), "Инвестпроект", horStyle);
+        initCell(row1.createCell(0), "Наименование", horStyle);
+        initCell(row1.createCell(5), "Код (шифр)", horStyle);
+        initCell(row2.createCell(0), "", horStyle);                                                          // нужно уточнить что сюда вставлять?
+        initCell(row2.createCell(7), "", horStyle);                                                          // нужно уточнить что сюда вставлять?
+
         initCell(row4.createCell(0), "Субподрядный договор на добычу ОПИ, с видом работ «добыча ОПИ на карьере»", horStyle);
-        initCell(row4.createCell(2), "Контрагент\n(наименование\nорганизации)", horStyle);
-        sheet.setColumnWidth(2,14*256);
         initCell(row4.createCell(3), "Карьер", horStyle);
         initCell(row4.createCell(5), "Сводка", horStyle);
 
-        Row row5 = sheet.createRow(5);
-        row5.setHeight((short) (5*228));
-        initCell(row5.createCell(0),"Номер\nдоговора", horStyle);
-        sheet.setColumnWidth(0,11*256);
+        int cellWightOne = 8;
+        int cellWightTwo = 10;
+        int cellWightThree = 14;
 
-        initCell(row5.createCell(1),"Дата\nдоговора", horStyle);
-        sheet.setColumnWidth(1,11*256);
-
-        initCell(row5.createCell(3),"Субъект\nРФ", horStyle);
-        sheet.setColumnWidth(3,8*256);
-
-        initCell(row5.createCell(4),"Наименование\nкарьера", horStyle);
-        sheet.setColumnWidth(4,14*256);
-
-        initCell(row5.createCell(5),"Дата, за\nкоторую\nподается\nсводка", horStyle);
-        sheet.setColumnWidth(5,14*256);
-
-        initCell(row5.createCell(6),"Вид работ на\nкарьере", horStyle);
-        sheet.setColumnWidth(6,15*256);
-
-        initCell(row5.createCell(7),"ОПИ (Материал)", horStyle);
-        sheet.setColumnWidth(7,15*256);
-
-        initCell(row5.createCell(8),"Объем\nвсего,\nкуб.м", horStyle);
-        sheet.setColumnWidth(8,10*256);
-
-        initCell(row5.createCell(9),"Объем всего, тн", horStyle);
-        sheet.setColumnWidth(9,15*256);
+        initCellWidth(sheet, cellWightThree, row4.createCell(2), "Контрагент\n(наименование\nорганизации)", horStyle);
+        initCellWidth(sheet, cellWightTwo + 1, row5.createCell(0), "Номер\nдоговора", horStyle);
+        initCellWidth(sheet, cellWightTwo + 1, row5.createCell(1), "Дата\nдоговора", horStyle);
+        initCellWidth(sheet, cellWightOne, row5.createCell(3), "Субъект\nРФ", horStyle);
+        initCellWidth(sheet, cellWightThree, row5.createCell(4), "Наименование\nкарьера", horStyle);
+        initCellWidth(sheet, cellWightThree, row5.createCell(5), "Дата, за\nкоторую\nподается\nсводка", horStyle);
+        initCellWidth(sheet, cellWightThree + 1, row5.createCell(6), "Вид работ на\nкарьере", horStyle);
+        initCellWidth(sheet, cellWightThree + 1, row5.createCell(7), "ОПИ (Материал)", horStyle);
+        initCellWidth(sheet, cellWightTwo, row5.createCell(8), "Объем\nвсего,\nкуб.м", horStyle);
+        initCellWidth(sheet, cellWightThree + 1, row5.createCell(9), "Объем всего, тн", horStyle);
 
         // нумеруем колонки под наименованием
-        Row row6 = sheet.createRow(6);
         for (int i = 1; i < 11; i++) {
             initCell(row6.createCell(i - 1), String.valueOf(i), horStyle);
         }
     }
 
-    private void initCell(Cell cell, String val, CellStyle style) {
-        cell.setCellValue(val);
-        cell.setCellStyle(style);
+    private Font fontStyle(Workbook book) {
+        Font font = book.createFont();
+        font.setBold(true);
+        font.setFontName("Arial");
+        font.setFontHeight((short) (9 * 20));                                                                                //размер шрифта -> 9 = (9 / (1/20))
+        return font;
     }
 
     private CellStyle cellStyle(Workbook book, Font font) {
@@ -146,12 +133,15 @@ public class Fourteen {
         style.setFont(font);
         return style;
     }
-    private Font fontStyle(Workbook book) {
-        Font font = book.createFont();
-        font.setBold(true);
-        font.setFontName("Arial");
-        font.setFontHeight((short) (9*20));                                                                                //размер шрифта -> 9 = (9 / (1/20))
-        return font;
+
+    private void initCell(Cell cell, String val, CellStyle style) {
+        cell.setCellValue(val);
+        cell.setCellStyle(style);
     }
 
+    private void initCellWidth(Sheet sheet, int wightColum, Cell cell, String text, CellStyle cellStyle) {
+        sheet.setColumnWidth(cell.getColumnIndex(), wightColum * 255);
+        cell.setCellValue(text);
+        cell.setCellStyle(cellStyle);
+    }
 }

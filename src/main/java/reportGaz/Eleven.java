@@ -73,29 +73,30 @@ public class Eleven {
         sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 3));
         sheet.addMergedRegion(new CellRangeAddress(4, 4, 0, 5));
+
         for (int i = 4; i < 10; i++) {
             sheet.addMergedRegion(new CellRangeAddress(0, 1, i, i));
         }
 
-        initCellWidth(sheet, 4, row0.createCell(0), "№\nп/п", cellStyleBold);
         initCell(row0.createCell(1), "Первичный документ", cellStyleBold);
+        initCell(row4.createCell(0), "ИТОГО", cellStyle);
 
-        initCellWidth(sheet, 16, row1.createCell(1), "Наименование", cellStyleBold);
-        initCellWidth(sheet, 10, row1.createCell(2), "Номер", cellStyleBold);
-        initCellWidth(sheet, 8, row1.createCell(3), "Дата", cellStyleBold);
-
+        initCellWidth(sheet, 4, row0.createCell(0), "№\nп/п", cellStyleBold);
         initCellWidth(sheet, 16, row0.createCell(4), "Наименование\nматериала", cellStyleBold);
         initCellWidth(sheet, 20, row0.createCell(5), "Номенклатурный\nномер", cellStyleBold);
         initCellWidth(sheet, 12, row0.createCell(6), "Остаток\nна начало\nмесяца", cellStyleBold);
         initCellWidth(sheet, 12, row0.createCell(7), "Поступило\nв текущем\nмесяце", cellStyleBold);
         initCellWidth(sheet, 16, row0.createCell(8), "Использовано\nв текущем\nмесяце", cellStyleBold);
         initCellWidth(sheet, 12, row0.createCell(9), "Остаток\nна конец\nмесяца", cellStyleBold);
+        initCellWidth(sheet, 16, row1.createCell(1), "Наименование", cellStyleBold);
+        initCellWidth(sheet, 10, row1.createCell(2), "Номер", cellStyleBold);
+        initCellWidth(sheet, 8, row1.createCell(3), "Дата", cellStyleBold);
 
         for (int i = 1; i < 11; i++) {
             initCell(row2.createCell(i - 1), String.valueOf(i), cellStyleBoldSmall);
         }
 
-        initCell(row4.createCell(0), "ИТОГО", cellStyle);
+
 
     }
 

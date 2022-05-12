@@ -64,35 +64,39 @@ public class Thirteen {
         regularStyleLeft.setAlignment(HorizontalAlignment.LEFT);
 
         Row row0 = sheet.createRow(0);
+        Row row1 = sheet.createRow(1);
+        Row row2 = sheet.createRow(2);
+        Row row3 = sheet.createRow(3);
+
+        row3.setHeight((short) (2 * 255));
+
         sheet.addMergedRegion(new CellRangeAddress(0, 2, 0, 1));
-        initCell(row0.createCell(0), "Агент:", boldStyle);
         sheet.addMergedRegion(new CellRangeAddress(0, 2, 2, 10));
-        initCell(row0.createCell(2), "Тут будет вставка организации", regularStyleLeft);
         sheet.addMergedRegion(new CellRangeAddress(0, 1, 17, 18));
-        initCell(row0.createCell(17), "Номер\nдокумента", regularStyle);
         sheet.addMergedRegion(new CellRangeAddress(0, 1, 19, 20));
-        initCell(row0.createCell(19), "Дата\nсоставления", regularStyle);
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 21, 24));
+
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 21, 22));
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 23, 24));
+
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 17, 18));
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 19, 20));
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 21, 22));
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 23, 24));
+
+        initCell(row0.createCell(0), "Агент:", boldStyle);
+        initCell(row0.createCell(2), "Тут будет вставка организации", regularStyleLeft);
+        initCell(row0.createCell(17), "Номер\nдокумента", regularStyle);
+        initCell(row0.createCell(19), "Дата\nсоставления", regularStyle);
         initCell(row0.createCell(21), "Отчетный период", regularStyle);
 
-        Row row1 = sheet.createRow(1);
-        sheet.addMergedRegion(new CellRangeAddress(1, 1, 21, 22));
         initCell(row1.createCell(21), "c", regularStyle);
-        sheet.addMergedRegion(new CellRangeAddress(1, 1, 23, 24));
         initCell(row1.createCell(23), "по", regularStyle);
 
-        Row row2 = sheet.createRow(2);
-        sheet.addMergedRegion(new CellRangeAddress(2, 2, 17, 18));
         initCell(row2.createCell(17), "?", regularStyle);
-        sheet.addMergedRegion(new CellRangeAddress(2, 2, 19, 20));
         initCell(row2.createCell(19), "?", regularStyle);
-        sheet.addMergedRegion(new CellRangeAddress(2, 2, 21, 22));
         initCell(row2.createCell(21), "?", regularStyle);
-        sheet.addMergedRegion(new CellRangeAddress(2, 2, 23, 24));
         initCell(row2.createCell(23), "?", regularStyle);
-
-        Row row3 = sheet.createRow(3);
-        row3.setHeight((short) (2 * 255));
     }
 
     private void nameColumn(Workbook book, Sheet sheet) {
@@ -104,80 +108,74 @@ public class Thirteen {
 
         Row row4 = sheet.createRow(4);
         Row row5 = sheet.createRow(5);
+        Row row6 = sheet.createRow(6);
+
         row4.setHeight((short) (3 * 255));
 
-        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 0, 0));
-        initCellWidth(sheet, 4, row4.createCell(0), "№\nп/п", regularStyle);
-
         sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 4, 1, 2));
-        initCell(row4.createCell(1), "Стройка", regularStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(1), "Код", verStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(2), "Наименование ", verStyle);
-
         sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 4, 3, 4));
-        initCell(row4.createCell(3), "Объект", regularStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(3), "Код", verStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(4), "Наименование", verStyle);
-
         sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 4, 5, 6));
-        initCell(row4.createCell(5), "Контрагент\n(подрядчик СМР)", regularStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(5), "Код", verStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(6), "Наименование", verStyle);
-
         sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 4, 7, 8));
-        initCell(row4.createCell(7), "Договор\nподряда", regularStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(7), "Номер", verStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(8), "Дата", verStyle);
-
         sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 4, 9, 10));
-        initCell(row4.createCell(9), "Карьер", regularStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(9), "Код", verStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(10), "Наименование карьера", verStyle);
-
-        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 11, 11));
-        initCellWidth(sheet, weightCell, row4.createCell(11), "Наименование материала (ОПИ)", verStyle);
-
-        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 12, 12));
-        initCellWidth(sheet, weightCell, row4.createCell(12), "Номенклатурный номер", verStyle);
-
         sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 4, 13, 14));
-        initCell(row4.createCell(13), "Единица измерения", regularStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(13), "Код", verStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(14), "Наименование", verStyle);
-
-        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 15, 15));
-        initCellWidth(sheet, 12, row4.createCell(15),
-                "Остаток ОПИ (в основном состоянии*)\nна начало отчетного периода", verStyle);
-
-        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 16, 16));
-        initCellWidth(sheet, 12, row4.createCell(16),
-                "Получено ОПИ (в основном состоянии)\nза отчетный месяц", verStyle);
-
-        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 17, 17));
-        initCellWidth(sheet, weightCell, row4.createCell(17), "№ накладной", verStyle);
-
-        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 18, 18));
-        initCellWidth(sheet, weightCell, row4.createCell(18), "Дата накладной", verStyle);
-
         sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 4, 19, 21));
-        initCell(row4.createCell(19), "Израсходовано ОПИ\n(в основном состоянии)\nза отчетный месяц", regularStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(19), "количество ОПИ", verStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(20), "№, дата Справки о движении\nОПИ к Отчету ф.№М-29", verStyle);
-        initCellWidth(sheet, weightCell, row5.createCell(21), "№, дата акта ф.№КС-2", verStyle);
-
         sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 4, 22, 23));
+
+        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 0, 0));
+        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 11, 11));
+        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 12, 12));
+        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 15, 15));
+        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 16, 16));
+        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 17, 17));
+        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 18, 18));
+        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 24, 24));
+
+        initCell(row4.createCell(1), "Стройка", regularStyle);
+        initCell(row4.createCell(3), "Объект", regularStyle);
+        initCell(row4.createCell(5), "Контрагент\n(подрядчик СМР)", regularStyle);
+        initCell(row4.createCell(7), "Договор\nподряда", regularStyle);
+        initCell(row4.createCell(9), "Карьер", regularStyle);
+        initCell(row4.createCell(13), "Единица измерения", regularStyle);
+        initCell(row4.createCell(19), "Израсходовано ОПИ\n(в основном состоянии)\nза отчетный месяц", regularStyle);
         initCell(row4.createCell(22), "СПРАВОЧНО:\n"
                 + "объем использованных ОПИ исходя из проектного объема работ", regularStyle);
 
-        initCellWidth(sheet, 16, row5.createCell(22), "израсходовано ОПИ исходя\nиз проектного объема работ\n"
-                + "за отчетный период\n(в соответствии с ф.№КС-2)", verStyle);
-        initCellWidth(sheet, 16, row5.createCell(23), "коэффициент (соотношение)\nобъема ОПИ в основном\n"
-                + "состоянии и ОПИ исходя из\nпроектного объема работ", verStyle);
-
-        sheet.addMergedRegionUnsafe(new CellRangeAddress(4, 5, 24, 24));
+        initCellWidth(sheet, 4, row4.createCell(0), "№\nп/п", regularStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(1), "Код", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(2), "Наименование ", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(3), "Код", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(4), "Наименование", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(5), "Код", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(6), "Наименование", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(7), "Номер", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(8), "Дата", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(9), "Код", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(10), "Наименование карьера", verStyle);
+        initCellWidth(sheet, weightCell, row4.createCell(11), "Наименование материала (ОПИ)", verStyle);
+        initCellWidth(sheet, weightCell, row4.createCell(12), "Номенклатурный номер", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(13), "Код", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(14), "Наименование", verStyle);
+        initCellWidth(sheet, 12, row4.createCell(15),
+                "Остаток ОПИ (в основном состоянии*)\nна начало отчетного периода", verStyle);
+        initCellWidth(sheet, 12, row4.createCell(16),
+                "Получено ОПИ (в основном состоянии)\nза отчетный месяц", verStyle);
+        initCellWidth(sheet, weightCell, row4.createCell(17), "№ накладной", verStyle);
+        initCellWidth(sheet, weightCell, row4.createCell(18), "Дата накладной", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(19), "количество ОПИ", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(20), "№, дата Справки о движении\nОПИ к Отчету ф.№М-29", verStyle);
+        initCellWidth(sheet, weightCell, row5.createCell(21), "№, дата акта ф.№КС-2", verStyle);
+        initCellWidth(sheet, 16, row5.createCell(22), """
+                израсходовано ОПИ исходя
+                из проектного объема работ
+                за отчетный период
+                (в соответствии с ф.№КС-2)""", verStyle);
+        initCellWidth(sheet, 16, row5.createCell(23), """
+                коэффициент (соотношение)
+                объема ОПИ в основном
+                состоянии и ОПИ исходя из
+                проектного объема работ""", verStyle);
         initCellWidth(sheet, weightCell, row4.createCell(24), "Остаток ОПИ (в основном состоянии)\nна конец отчетного периода", verStyle);
 
-        Row row6 = sheet.createRow(6);
         for (int i = 1; i < 26; i++) {
             initCell(row6.createCell(i - 1), String.valueOf(i), regularStyle);
         }
@@ -189,42 +187,47 @@ public class Thirteen {
         verStyle.setRotation((short) 90);
 
         Row row7 = sheet.createRow(7);
-        initCell(row7.createCell(0), "", regularStyle);
-        for (int i = 1; i < 26; i++) {
-            initCell(row7.createCell(i - 1), "", verStyle);
-        }
-
         Row row8 = sheet.createRow(8);
-        sheet.addMergedRegion(new CellRangeAddress(8, 8, 0, 14));
-        rowNameTotal(row8, regularStyle, verStyle);
-
         Row row9 = sheet.createRow(9);
         Row row10 = sheet.createRow(10);
-        rowTotal(sheet, regularStyle, verStyle, row9, row10, "по сторонним\nкарьерам");
-
         Row row11 = sheet.createRow(11);
         Row row12 = sheet.createRow(12);
-        rowTotal(sheet, regularStyle, verStyle, row11, row12, "по\nсубъектам");
-
         Row row13 = sheet.createRow(13);
         Row row14 = sheet.createRow(14);
-        rowTotal(sheet, regularStyle, verStyle, row13, row14, "по\nпоставщикам");
-
         Row row15 = sheet.createRow(15);
         Row row16 = sheet.createRow(16);
-        rowTotal(sheet, regularStyle, verStyle, row15, row16, "по\nподрядчикам");
-
         Row row17 = sheet.createRow(17);
         Row row18 = sheet.createRow(18);
+
+        sheet.addMergedRegion(new CellRangeAddress(8, 8, 0, 14));
+
+        rowNameTotal(row8, regularStyle, verStyle);
+
+        rowTotal(sheet, regularStyle, verStyle, row9, row10, "по сторонним\nкарьерам");
+        rowTotal(sheet, regularStyle, verStyle, row11, row12, "по\nсубъектам");
+        rowTotal(sheet, regularStyle, verStyle, row13, row14, "по\nпоставщикам");
+        rowTotal(sheet, regularStyle, verStyle, row15, row16, "по\nподрядчикам");
         rowTotal(sheet, regularStyle, verStyle, row17, row18, "по\nобъектам");
+
+        for (int i = 1; i < 26; i++) {
+            initCell(row7.createCell(i - 1), "??", verStyle);
+        }
     }
 
-    private void rowTotal(Sheet sheet, CellStyle cellRegularStyle, CellStyle cellVerStyle, Row rowName, Row rowTotal, String text) {
-        sheet.addMergedRegion(new CellRangeAddress(rowName.getRowNum(), rowName.getRowNum(), 0, 2));
-        sheet.addMergedRegion(new CellRangeAddress(rowTotal.getRowNum(), rowTotal.getRowNum(), 0, 14));
-        rowName.setHeight((short) (2 * 255));
-        initCell(rowName.createCell(0), text, cellRegularStyle);
-        rowNameTotal(rowTotal, cellRegularStyle, cellVerStyle);
+    private Font font(Workbook book, boolean bold, int fontSize) {
+        Font font = book.createFont();
+        font.setFontName("Times New Roman");
+        font.setBold(bold);
+        font.setFontHeight((short) (fontSize * 20));
+        return font;
+    }
+    private CellStyle cellStyle(Workbook book, Font font) {
+        CellStyle style = book.createCellStyle();
+        style.setWrapText(true);                                                                                        // перенос текста
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setFont(font);
+        return style;
     }
 
     private void rowNameTotal(Row rowTotal, CellStyle regularStyle, CellStyle verStyle) {
@@ -236,6 +239,13 @@ public class Thirteen {
                 initCell(rowTotal.createCell(i - 1), "", verStyle);
             }
         }
+    }
+    private void rowTotal(Sheet sheet, CellStyle cellRegularStyle, CellStyle cellVerStyle, Row rowName, Row rowTotal, String text) {
+        sheet.addMergedRegion(new CellRangeAddress(rowName.getRowNum(), rowName.getRowNum(), 0, 2));
+        sheet.addMergedRegion(new CellRangeAddress(rowTotal.getRowNum(), rowTotal.getRowNum(), 0, 14));
+        rowName.setHeight((short) (2 * 255));
+        initCell(rowName.createCell(0), text, cellRegularStyle);
+        rowNameTotal(rowTotal, cellRegularStyle, cellVerStyle);
     }
 
     private void initCell(Cell cell, String text, CellStyle cellStyle) {
@@ -249,20 +259,5 @@ public class Thirteen {
         cell.setCellStyle(cellStyle);
     }
 
-    private Font font(Workbook book, boolean bold, int fontSize) {
-        Font font = book.createFont();
-        font.setFontName("Times New Roman");
-        font.setBold(bold);
-        font.setFontHeight((short) (fontSize * 20));
-        return font;
-    }
 
-    private CellStyle cellStyle(Workbook book, Font font) {
-        CellStyle style = book.createCellStyle();
-        style.setWrapText(true);                                                                                        // перенос текста
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        style.setFont(font);
-        return style;
-    }
 }

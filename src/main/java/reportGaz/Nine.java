@@ -79,12 +79,14 @@ public class Nine {
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 9));
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 13));
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 16));
+        sheet.addMergedRegion(new CellRangeAddress(4,4,0,1));
 
         initCell(row0.createCell(1), "Стройка", cellHorStyle);
         initCell(row0.createCell(3), "Подрядчик (место хранения)", cellHorStyle);
         initCell(row0.createCell(7), "Договор", cellHorStyle);
         initCell(row0.createCell(10), "Информация о передаче материалов\nПодрядчику СМР/Заказчику (при возврате)", cellHorStyle);
         initCell(row0.createCell(14), "Первичный документ", cellHorStyle);
+        initCell(row4.createCell(0),"ИТОГО:",cellHorStyle);
 
         initCellWidth(sheet, cellWightOne, row0.createCell(0), "№\nп/п", cellHorStyle);
         initCellWidth(sheet, cellWightOne, row0.createCell(17), "Счет\n(с/счет)\nбух.\nучета", cellHorStyle);

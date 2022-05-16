@@ -1,4 +1,4 @@
-package reportGaz;
+package gaz.nine.service;
 
 import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -9,10 +9,10 @@ import org.apache.poi.ss.util.PropertyTemplate;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class Nine {
+public class Nine_9_ReportService {
     public static void main(String[] args) throws IOException {
-        Nine nine = new Nine();
-        nine.createReport("9.xls");
+        Nine_9_ReportService nine9 = new Nine_9_ReportService();
+        nine9.createReport("9.xls");
     }
 
     public void createReport(String file) throws IOException {

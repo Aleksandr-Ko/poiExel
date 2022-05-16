@@ -1,4 +1,4 @@
-package reportGaz;
+package gaz.twelve.service;
 
 import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -9,9 +9,9 @@ import org.apache.poi.ss.util.PropertyTemplate;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class Twelve {
+public class Twelve_12_ReportService {
     public static void main(String[] args) throws IOException {
-        Twelve tw = new Twelve();
+        Twelve_12_ReportService tw = new Twelve_12_ReportService();
         tw.createReport("12.xls");
     }
 

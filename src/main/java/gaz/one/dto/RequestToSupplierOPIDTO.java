@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class One_1_DTO {
+public class RequestToSupplierOPIDTO {
 
     private String investmentProject;
     private String OKS;
@@ -16,7 +16,7 @@ public class One_1_DTO {
     private String IO;
     private String OPI;
 
-    private String dateRequest;
+    private String datePeriod;
     private String quarry;
 
 

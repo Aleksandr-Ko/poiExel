@@ -1,6 +1,6 @@
 package gaz.one.service;
 
-import gaz.one.dto.One_1_DTO;
+import gaz.one.dto.RequestToSupplierOPIDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,30 +9,30 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class One_1_DataService {
+public class RequestToSupplierOPIDataService {
 
     private List<String> quarry (){
 
-        List<String> ary = new ArrayList<>();
-        ary.add("one quarry");
-        ary.add("two quarry");
-        ary.add("tree quarry");
+        List<String> listquarry = new ArrayList<>();
+        listquarry.add("«one quarry»");
+        listquarry.add("«two quarry»");
+        listquarry.add("«tree quarry»");
 
-        return ary;
+        return listquarry;
     }
 
-    public One_1_DTO create() {
+    public RequestToSupplierOPIDTO create() {
 
         Date from = new Date();
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(from);
-        calendar.set(Calendar.DATE, 2);
+        calendar.add(Calendar.MONTH, 2);
         Date to = calendar.getTime();
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy.MM");
 
-        One_1_DTO one = new One_1_DTO();
+        RequestToSupplierOPIDTO one = new RequestToSupplierOPIDTO();
 
         one.setInvestmentProject("new InvestmentProject");
         one.setOKS("new OKS");
@@ -41,7 +41,7 @@ public class One_1_DataService {
         one.setIO(printSecondName(one.getFIO()));
         one.setOPI("new OPI");
         one.setQuarry(printQuarry(quarry()));
-        one.setDateRequest("с " + df.format(from) + " по " + df.format(to));
+        one.setDatePeriod("с " + df.format(from) + " по " + df.format(to));
 
         return one;
     }
@@ -63,5 +63,4 @@ public class One_1_DataService {
                 .map(String::valueOf)
                 .collect(Collectors.joining(", "));
     }
-
 }

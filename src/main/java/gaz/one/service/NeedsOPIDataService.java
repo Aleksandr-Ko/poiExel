@@ -1,6 +1,6 @@
 package gaz.one.service;
 
-import gaz.one.dto.RequestToSupplierOPIDTO;
+import gaz.one.dto.NeedsOPIDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RequestToSupplierOPIDataService {
+public class NeedsOPIDataService {
 
     private List<String> quarry (){
         List<String> listquarry = new ArrayList<>();
@@ -18,7 +18,7 @@ public class RequestToSupplierOPIDataService {
         listquarry.add("«tree quarry»");
         return listquarry;
     }
-    public RequestToSupplierOPIDTO create() {
+    public NeedsOPIDTO create() {
         // заглушка с датой
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
@@ -31,14 +31,15 @@ public class RequestToSupplierOPIDataService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy.MM");
         SimpleDateFormat dfFull = new SimpleDateFormat("dd.MM.yyyy");
 
-        RequestToSupplierOPIDTO one = new RequestToSupplierOPIDTO();
+        NeedsOPIDTO one = new NeedsOPIDTO();
 
         one.setDateRequest(""+dfFull.format(now));
         one.setInvestmentProject("new InvestmentProject");
         one.setNameOKS("new OKS");
         one.setContractorSMR("new SMR");
         one.setSupplierOPI("new OPI");
-        one.setNameQuarry(printQuarry(quarry()));
+        one.setViewOPI("sand");
+        one.setListNameQuarry(printQuarry(quarry()));
         one.setDatePeriod(" " + df.format(from) + " по " + df.format(to));
         one.setNameQuarry("new name Quarry");
         one.setNumberContractOPI("new numContr");

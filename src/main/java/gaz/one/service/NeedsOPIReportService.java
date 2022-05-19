@@ -1,6 +1,6 @@
 package gaz.one.service;
 
-import gaz.one.dto.RequestToSupplierOPIDTO;
+import gaz.one.dto.NeedsOPIDTO;
 import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.FileOutputStream;
@@ -9,56 +9,61 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
 
-public class RequestToSupplierOPIReportService {
+public class NeedsOPIReportService {
 
     public static void main(String[] args) throws IOException {
-        RequestToSupplierOPIReportService requestOPI = new RequestToSupplierOPIReportService();
+        NeedsOPIReportService requestOPI = new NeedsOPIReportService();
         requestOPI.updateDocument();
     }
 
-    public  void updateDocument() throws IOException {
+    public void updateDocument() throws IOException {
         // путь к шаблону
-        String templatePage = "src/main/resources/templateWord/1.docx";
+        String templateWord = "src/main/resources/templateWord/NeedsOPI.docx";
         // путь и имя сохраняемого файла.
-        String outBasic = "1_new.docx";
+        String outBasic = "newNeedsOPI.docx";
         // обращение к базе
-        RequestToSupplierOPIDataService one = new RequestToSupplierOPIDataService();
-        RequestToSupplierOPIDTO reqDTO = one.create();
-        // создание(чтение) документа
-        XWPFDocument doc = new XWPFDocument(Files.newInputStream(Path.of(templatePage)));
+        NeedsOPIDataService one = new NeedsOPIDataService();
+        NeedsOPIDTO reqDTO = one.create();
+        // чтение документа
+        XWPFDocument doc = new XWPFDocument(Files.newInputStream(Path.of(templateWord)));
         Iterator<XWPFParagraph> para = doc.getParagraphsIterator();
         Iterator<XWPFTable> table = doc.getTablesIterator();
-        // наполнение документа
+        // изменение документа
         paragraph(para, reqDTO);
         table(table, reqDTO);
         // сохранение документа
         FileOutputStream out = new FileOutputStream(outBasic);
         doc.write(out);
-        doc.close();
+        out.close();
 
         System.out.println("\nМожно пробовать");
     }
+
     // поиск и изменение текста в параграфе
-    private void paragraph(Iterator<XWPFParagraph> para, RequestToSupplierOPIDTO req) {
+    private void paragraph(Iterator<XWPFParagraph> para, NeedsOPIDTO req) {
         for (XWPFParagraph xwpfParagraph : para.next().getBody().getParagraphs()) {
             for (XWPFRun xwpfRun : xwpfParagraph.getRuns()) {
                 String docText = xwpfRun.getText(0);
-                docText = docText.replace("инвестпроект", req.getInvestmentProject());
-                docText = docText.replace("Наименование ОКС", req.getNameOKS());
-                docText = docText.replace("Подрядчик СМР", req.getContractorSMR());
-                docText = docText.replace("Поставщик ОПИ", req.getSupplierOPI());
-                docText = docText.replace("Отчетный период поставки (год, месяц)", req.getDatePeriod());
-                docText = docText.replace("Наименование карьера", req.getNameQuarry());
-                docText = docText.replace("ДД.ММ.ГГГГ", req.getDateRequest());
+
+                docText = docText.replace("investmentProject", req.getInvestmentProject())
+                        .replace("nameOKS", req.getNameOKS())
+                        .replace("contractorSMR", req.getContractorSMR())
+                        .replace("supplierOPI", req.getSupplierOPI())
+                        .replace("date", req.getDateRequest())
+                        .replace("periodDate", req.getDatePeriod())
+                        .replace("listNameQuarry", req.getListNameQuarry())
+                        .replace("ДД.ММ.ГГГГ", req.getDateRequest());
+
                 xwpfRun.setText(docText, 0);
             }
         }
     }
+
     // добавление данных в таблицу
-    private void table(Iterator<XWPFTable> table, RequestToSupplierOPIDTO req) {
+    private void table(Iterator<XWPFTable> table, NeedsOPIDTO req) {
         for (XWPFTable tab : table.next().getBody().getTables()) {
             XWPFTableRow row1 = tab.createRow();
-            cellInRow(row1, 0, "3");
+            cellInRow(row1, 0, "1");
             cellInRow(row1, 1, "" + req.getViewOPI());
             cellInRow(row1, 2, "" + req.getNameQuarry());
             cellInRow(row1, 3, "" + req.getNumberContractOPI() + " от " + req.getDateContractOPI());
@@ -78,6 +83,7 @@ public class RequestToSupplierOPIReportService {
     // стиль текста
     private static XWPFRun styleText(XWPFTableRow tableRow, int cell) {
         XWPFTableCell tCell = tableRow.getCell(cell);
+        tCell.setWidth("auto");
         tCell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.TOP);
 
         XWPFParagraph paragraph = tCell.addParagraph();

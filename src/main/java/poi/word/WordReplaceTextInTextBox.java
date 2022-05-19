@@ -17,7 +17,7 @@ public class WordReplaceTextInTextBox {
 
     public static void main(String[] args) throws Exception {
 
-        XWPFDocument document = new XWPFDocument(new FileInputStream("8.docx"));
+        XWPFDocument document = new XWPFDocument(new FileInputStream("1_new.docx"));
 
         String someWords = "${name}";
 //        String someWords = "TextBox";

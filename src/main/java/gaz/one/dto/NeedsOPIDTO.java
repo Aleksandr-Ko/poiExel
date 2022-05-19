@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestToSupplierOPIDTO {
+public class NeedsOPIDTO {
 
 
     private String contractorSMR;       // Подрядчик СМР
@@ -19,6 +19,7 @@ public class RequestToSupplierOPIDTO {
 
     private String nameOKS;             // Наименование ОКС
 
+    private String listNameQuarry;      // список карьеров для первой страницы
     private String nameQuarry;          // Наименование карьера
     private String supplierOPI;         // Поставщик ОПИ
     private String viewOPI;             // Вид ОПИ

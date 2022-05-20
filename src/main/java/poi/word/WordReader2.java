@@ -15,7 +15,6 @@ public class WordReader2 {
         XWPFWordExtractor wordExtractor = new XWPFWordExtractor(OPCPackage.open(fileInputStream));
         String para = wordExtractor.getText();
 
-//        CTR ctr = CTR.Factory.parse(obj.toString());
         System.out.println(para);
 
     }

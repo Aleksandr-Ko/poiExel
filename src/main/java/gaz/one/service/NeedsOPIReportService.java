@@ -13,8 +13,12 @@ public class NeedsOPIReportService {
 
     public static void main(String[] args) throws IOException {
         NeedsOPIReportService requestOPI = new NeedsOPIReportService();
-        requestOPI.updateDocument();
+//        requestOPI.updateDocument();
+
+
     }
+
+
 
     public void updateDocument() throws IOException {
         // путь к шаблону
@@ -44,7 +48,7 @@ public class NeedsOPIReportService {
         for (XWPFParagraph xwpfParagraph : para.next().getBody().getParagraphs()) {
             for (XWPFRun xwpfRun : xwpfParagraph.getRuns()) {
                 String docText = xwpfRun.getText(0);
-
+                // target в шаблон вставлять через copy/paste
                 docText = docText.replace("investmentProject", req.getInvestmentProject())
                         .replace("nameOKS", req.getNameOKS())
                         .replace("contractorSMR", req.getContractorSMR())

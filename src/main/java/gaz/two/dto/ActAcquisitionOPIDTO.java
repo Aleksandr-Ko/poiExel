@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ActAcquisitionOPIDTO {
 
     private String city;
-    private String dateRequest;
+    private Date dateRequest;
     private String periodRequest;
 
     private String contractNum;

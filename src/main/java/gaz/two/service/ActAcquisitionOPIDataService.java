@@ -28,7 +28,7 @@ public class ActAcquisitionOPIDataService {
         ActAcquisitionOPIDTO act = new ActAcquisitionOPIDTO();
 
         act.setCity("Санкт-Петербург");
-        act.setDateRequest("" + dfquotes.format(now));
+        act.setDateRequest(now);
         act.setPeriodRequest("с "+ dfFull.format(from) + " по " + dfFull.format(to));
         act.setContractNum("ОПИ-51");
         act.setContractDate("«04» декабря 2017 г");
@@ -38,7 +38,7 @@ public class ActAcquisitionOPIDataService {
         act.setFirstProxy("доверенности от 09 ноября 2020 года № 01/04/04-564д");
         act.setSecondPost("заместителя начальника управления исполнения договоров подготовки производства "
                 + "ООО «Газпром инвест»");
-        act.setSecondFIO("Черепанова Дмитрия Андреевича");
+        act.setSecondFIO("Черепанов Дмитрий Андреевич");
         act.setSecondProxy("доверенности от 09 ноября 2020 года № 01/04/04-564д");
 
         act.setExpenses("3 861 380 (Три миллиона восемьсот шестьдесят одна тысяча триста восемьдесят) рублей "

@@ -1,18 +1,18 @@
-package gaz.three.service;
+package gaz.three.sand.service;
 
-import gaz.three.dto.ActSandTransferDTO;
+import gaz.three.sand.dto.ActSandAcceptanceDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ActSandTransferDataService {
+public class ActSandAcceptanceDataService {
     public static void main(String[] args) {
-        ActSandTransferDataService acc = new ActSandTransferDataService();
+        ActSandAcceptanceDataService acc = new ActSandAcceptanceDataService();
         acc.getAcceptanceCertificateSandDTO();
 
     }
-    public ActSandTransferDTO getAcceptanceCertificateSandDTO() {
+    public ActSandAcceptanceDTO getAcceptanceCertificateSandDTO() {
         // заглушка с датой
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
@@ -24,7 +24,7 @@ public class ActSandTransferDataService {
         // формат даты
         SimpleDateFormat dfFull = new SimpleDateFormat("dd MMMM yyyy");
 
-        ActSandTransferDTO dto = new ActSandTransferDTO();
+        ActSandAcceptanceDTO dto = new ActSandAcceptanceDTO();
 
         dto.setNumQuarry("283-1М");
         dto.setDateRequest(now);

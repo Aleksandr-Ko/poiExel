@@ -1,6 +1,6 @@
-package gaz.three.service;
+package gaz.three.sand.service;
 
-import gaz.three.dto.ActSandTransferDTO;
+import gaz.three.sand.dto.ActSandAcceptanceDTO;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.core.io.ClassPathResource;
 
@@ -9,16 +9,16 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ActSandTransferReportService {
+public class ActSandAcceptanceReportService {
     public static void main(String[] args) throws Exception {
-        ActSandTransferReportService report = new ActSandTransferReportService();
+        ActSandAcceptanceReportService report = new ActSandAcceptanceReportService();
         report.updateDocument();
     }
 
     public void updateDocument() throws IOException {
         // обращение к базе
-        ActSandTransferDataService actData = new ActSandTransferDataService();
-        ActSandTransferDTO actDTO = actData.getAcceptanceCertificateSandDTO();
+        ActSandAcceptanceDataService actData = new ActSandAcceptanceDataService();
+        ActSandAcceptanceDTO actDTO = actData.getAcceptanceCertificateSandDTO();
         // путь к шаблону
         ClassPathResource f = new ClassPathResource("templateWord/ActSandTransfer.docx");
         // чтение документа
@@ -38,7 +38,7 @@ public class ActSandTransferReportService {
     }
 
     // изменение текста
-    private void paragraph(List<XWPFParagraph> listParagraph, ActSandTransferDTO actDTO) {
+    private void paragraph(List<XWPFParagraph> listParagraph, ActSandAcceptanceDTO actDTO) {
         // формат даты
         SimpleDateFormat dfMY = new SimpleDateFormat(" MMMM yyyy");
 
@@ -67,7 +67,7 @@ public class ActSandTransferReportService {
     }
 
     // изменение текста в ячейке
-    private void updateInCell(XWPFDocument doc, ActSandTransferDTO actDTO) {
+    private void updateInCell(XWPFDocument doc, ActSandAcceptanceDTO actDTO) {
         SimpleDateFormat dfquotes = new SimpleDateFormat("«dd» MMMM yyyy г.");
 
         XWPFTableCell city = doc.getTableArray(0).getRow(0).getCell(0);

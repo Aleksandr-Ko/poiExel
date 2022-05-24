@@ -1,4 +1,4 @@
-package gaz.three.dto;
+package gaz.three.sand.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActSandTransferDTO {
+public class ActSandAcceptanceDTO {
 
 
     private String city;                // название города

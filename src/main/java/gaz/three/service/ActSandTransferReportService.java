@@ -1,6 +1,6 @@
-package gaz.two.service;
+package gaz.three.service;
 
-import gaz.two.dto.ActAcquisitionOPIDTO;
+import gaz.three.dto.ActSandTransferDTO;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.core.io.ClassPathResource;
 
@@ -9,19 +9,18 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ActAcquisitionOPIReportService {
-    public static void main(String[] args) throws IOException {
-        ActAcquisitionOPIReportService act = new ActAcquisitionOPIReportService();
-        act.updateDocument();
-
+public class ActSandTransferReportService {
+    public static void main(String[] args) throws Exception {
+        ActSandTransferReportService report = new ActSandTransferReportService();
+        report.updateDocument();
     }
 
     public void updateDocument() throws IOException {
         // обращение к базе
-        ActAcquisitionOPIDataService actData = new ActAcquisitionOPIDataService();
-        ActAcquisitionOPIDTO actDTO = actData.createDTO();
+        ActSandTransferDataService actData = new ActSandTransferDataService();
+        ActSandTransferDTO actDTO = actData.getAcceptanceCertificateSandDTO();
         // путь к шаблону
-        ClassPathResource f = new ClassPathResource("templateWord/ActAcquisitionOPI.docx");
+        ClassPathResource f = new ClassPathResource("templateWord/ActSandTransfer.docx");
         // чтение документа
         XWPFDocument doc = new XWPFDocument(f.getInputStream());
         List<XWPFParagraph> para = doc.getParagraphs();
@@ -29,11 +28,9 @@ public class ActAcquisitionOPIReportService {
         // изменение документа
         paragraph(para, actDTO);
         updateInCell(doc, actDTO);
-        addRow(doc, actDTO);
-        startForPage_2(doc, 16);
 
         // путь и имя сохраняемого файла.
-        String outBasic = "newActAcquisitionOPI.docx";
+        String outBasic = "newActSandTransfer.docx";
         // сохранение документа
         FileOutputStream out = new FileOutputStream(outBasic);
         doc.write(out);
@@ -41,7 +38,7 @@ public class ActAcquisitionOPIReportService {
     }
 
     // изменение текста
-    private void paragraph(List<XWPFParagraph> listParagraph, ActAcquisitionOPIDTO actDTO) {
+    private void paragraph(List<XWPFParagraph> listParagraph, ActSandTransferDTO actDTO) {
         // формат даты
         SimpleDateFormat dfMY = new SimpleDateFormat(" MMMM yyyy");
 
@@ -49,22 +46,20 @@ public class ActAcquisitionOPIReportService {
             for (XWPFRun run : para.getRuns()) {
 //                run.setColor("000000");
                 String text = run.getText(0);
-                text = text.replace("firstPost", "" + actDTO.getFirstPost())
-                        .replace("firstFIO", "" + actDTO.getFirstFIO())
+                text = text.replace("numQuarry", "" + actDTO.getNumQuarry())
                         // TODO ->  какую дату выводить? (запрос, составления или отчетного периода)
                         .replace("dateRequest", dfMY.format(actDTO.getDateRequest()))
+                        .replace("firstPost", "" + actDTO.getFirstPost())
+                        .replace("firstFIO", "" + actDTO.getFirstFIO())
                         .replace("firstProxy", "" + actDTO.getFirstProxy())
                         .replace("secondPost", "" + actDTO.getSecondPost())
                         .replace("secondFIO", "" + actDTO.getSecondFIO())
                         .replace("secondProxy", "" + actDTO.getSecondProxy())
-                        .replace("contractNum", "" + actDTO.getContractNum())
                         .replace("contractDate", "" + actDTO.getContractDate())
+                        .replace("contractNum", "" + actDTO.getContractNum())
                         .replace("periodRequest", "" + actDTO.getPeriodRequest())
-                        .replace("expensesNds", "" + actDTO.getExpensesNds())
-                        .replace("expenses", "" + actDTO.getExpenses())
-                        .replace("rewardTotal", "" + actDTO.getRewardTotal())
-                        .replace("rewardNDS", "" + actDTO.getRewardNDS())
-                        .replace("reward", "" + actDTO.getReward());
+                        .replace("capacitySand", "" + actDTO.getCapacitySand())
+                        .replace("sheetsNum", "" + actDTO.getSheetsNum());
 
                 run.setText(text, 0);
             }
@@ -72,59 +67,36 @@ public class ActAcquisitionOPIReportService {
     }
 
     // изменение текста в ячейке
-    private void updateInCell(XWPFDocument doc, ActAcquisitionOPIDTO actDTO) {
+    private void updateInCell(XWPFDocument doc, ActSandTransferDTO actDTO) {
         SimpleDateFormat dfquotes = new SimpleDateFormat("«dd» MMMM yyyy г.");
 
         XWPFTableCell city = doc.getTableArray(0).getRow(0).getCell(0);
         XWPFTableCell dateRequest = doc.getTableArray(0).getRow(0).getCell(2);
 
-        XWPFTableCell fPost = doc.getTableArray(1).getRow(0).getCell(0);
-        XWPFTableCell sPost = doc.getTableArray(1).getRow(0).getCell(1);
-        XWPFTableCell fFIO = doc.getTableArray(1).getRow(1).getCell(0);
-        XWPFTableCell sFIO = doc.getTableArray(1).getRow(1).getCell(1);
+        XWPFTableCell nameQuarry = doc.getTableArray(1).getRow(0).getCell(0);
 
-        XWPFTableCell fPost1 = doc.getTableArray(4).getRow(0).getCell(0);
-        XWPFTableCell sPost1 = doc.getTableArray(4).getRow(0).getCell(1);
-        XWPFTableCell fFIO1 = doc.getTableArray(4).getRow(1).getCell(0);
-        XWPFTableCell sFIO1 = doc.getTableArray(4).getRow(1).getCell(1);
+        XWPFTableCell gost = doc.getTableArray(2).getRow(0).getCell(0);
+        XWPFTableCell ok = doc.getTableArray(2).getRow(0).getCell(2);
+        XWPFTableCell opi = doc.getTableArray(2).getRow(0).getCell(4);
+
+        XWPFTableCell fPost = doc.getTableArray(4).getRow(0).getCell(0);
+        XWPFTableCell sPost = doc.getTableArray(4).getRow(0).getCell(1);
+        XWPFTableCell fFIO = doc.getTableArray(4).getRow(1).getCell(0);
+        XWPFTableCell sFIO = doc.getTableArray(4).getRow(1).getCell(1);
 
         replaceText(city.getParagraphs(), "city", actDTO.getCity());
         replaceText(dateRequest.getParagraphs(), "dateRequest", dfquotes.format(actDTO.getDateRequest()));
+        replaceText(nameQuarry.getParagraphs(), "nameQuarry", actDTO.getNameQuarry());
+
+        replaceText(gost.getParagraphs(), "GOST", actDTO.getGOST());
+        replaceText(ok.getParagraphs(), "codeOK", actDTO.getCodeOK());
+        replaceText(opi.getParagraphs(), "codeOPI", actDTO.getCodeOPI());
 
         replaceText(fPost.getParagraphs(), "firstPost", actDTO.getFirstPost());
         replaceText(sPost.getParagraphs(), "secondPost", actDTO.getSecondPost());
         replaceText(fFIO.getParagraphs(), "firstFIO", actDTO.getFirstFIO());
         replaceText(sFIO.getParagraphs(), "secondFIO", actDTO.getSecondFIO());
 
-        replaceText(fPost1.getParagraphs(), "firstPost", actDTO.getFirstPost());
-        replaceText(sPost1.getParagraphs(), "secondPost", actDTO.getSecondPost());
-        replaceText(fFIO1.getParagraphs(), "firstFIO", actDTO.getFirstFIO());
-        replaceText(sFIO1.getParagraphs(), "secondFIO", actDTO.getSecondFIO());
-    }
-    // добавление данных в таблицу
-    private void addRow(XWPFDocument doc, ActAcquisitionOPIDTO actDTO) {
-        XWPFTable table = doc.getTableArray(2);
-
-        XWPFTableRow row = table.createRow();
-        XWPFTableRow row1 = table.createRow();
-
-        addCellInRow(row, 0, "1");
-        addCellInRow(row, 1, "" + actDTO.getNameOPI());
-        addCellInRow(row, 2, "" + actDTO.getPrice());
-        addCellInRow(row, 3, "" + actDTO.getPriceNDS());
-        addCellInRow(row, 4, "" + actDTO.getPriceTotal());
-
-        addCellInRow(row1, 0, "");
-        addCellInRow(row1, 1, "Итого за Отчетный период:");
-        addCellInRow(row1, 2, "" + actDTO.getPrice());
-        addCellInRow(row1, 3, "" + actDTO.getPriceNDS());
-        addCellInRow(row1, 4, "" + actDTO.getPriceTotal());
-    }
-
-    // метод для начала с новой страницы
-    private void startForPage_2(XWPFDocument doc, int paragraph) {
-        XWPFParagraph par = doc.getParagraphArray(paragraph);
-        par.setPageBreak(true);
     }
 
     // метод для замены текста в ячейке

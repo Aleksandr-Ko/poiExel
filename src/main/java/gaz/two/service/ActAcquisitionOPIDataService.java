@@ -8,10 +8,6 @@ import java.util.Date;
 
 public class ActAcquisitionOPIDataService {
 
-    public static void main(String[] args) {
-
-    }
-
     public ActAcquisitionOPIDTO createDTO() {
         // заглушка с датой
         Date now = new Date();
@@ -23,7 +19,6 @@ public class ActAcquisitionOPIDataService {
 
         // формат даты
         SimpleDateFormat dfFull = new SimpleDateFormat("dd MMMM yyyy");
-        SimpleDateFormat dfquotes = new SimpleDateFormat("«dd» MMMM yyyy г.");
 
         ActAcquisitionOPIDTO act = new ActAcquisitionOPIDTO();
 
@@ -31,7 +26,7 @@ public class ActAcquisitionOPIDataService {
         act.setDateRequest(now);
         act.setPeriodRequest("с "+ dfFull.format(from) + " по " + dfFull.format(to));
         act.setContractNum("ОПИ-51");
-        act.setContractDate("«04» декабря 2017 г");
+        act.setContractDate("«04» декабря 2017");
         act.setNameOPI("Песок (ГОСТ 8736-2014) 800000052 ООО «Регион-Сбыт»");
         act.setFirstPost("начальника отдела 647/2/4 Управления 647/2 Департамента 647 ПАО «Газпром»");
         act.setFirstFIO("Щеткин Евгений Сергеевич");

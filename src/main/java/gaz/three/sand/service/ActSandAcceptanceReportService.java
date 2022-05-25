@@ -18,19 +18,18 @@ public class ActSandAcceptanceReportService {
     public void updateDocument() throws IOException {
         // обращение к базе
         ActSandAcceptanceDataService actData = new ActSandAcceptanceDataService();
-        ActSandAcceptanceDTO actDTO = actData.getAcceptanceCertificateSandDTO();
+        ActSandAcceptanceDTO actDTO = actData.getActSandAcceptanceDTO();
         // путь к шаблону
-        ClassPathResource f = new ClassPathResource("templateWord/ActSandTransfer.docx");
+        ClassPathResource f = new ClassPathResource("templateWord/ActSandAcceptance.docx");
         // чтение документа
         XWPFDocument doc = new XWPFDocument(f.getInputStream());
-        List<XWPFParagraph> para = doc.getParagraphs();
 
         // изменение документа
-        paragraph(para, actDTO);
+        paragraph(doc, actDTO);
         updateInCell(doc, actDTO);
 
         // путь и имя сохраняемого файла.
-        String outBasic = "newActSandTransfer.docx";
+        String outBasic = "newActSandAcceptance.docx";
         // сохранение документа
         FileOutputStream out = new FileOutputStream(outBasic);
         doc.write(out);
@@ -38,10 +37,11 @@ public class ActSandAcceptanceReportService {
     }
 
     // изменение текста
-    private void paragraph(List<XWPFParagraph> listParagraph, ActSandAcceptanceDTO actDTO) {
+    private void paragraph(XWPFDocument doc, ActSandAcceptanceDTO actDTO) {
         // формат даты
-        SimpleDateFormat dfMY = new SimpleDateFormat(" MMMM yyyy");
+        SimpleDateFormat dfMY = new SimpleDateFormat(" MMMM yyyy г.");
 
+        List<XWPFParagraph> listParagraph = doc.getParagraphs();
         for (XWPFParagraph para : listParagraph) {
             for (XWPFRun run : para.getRuns()) {
 //                run.setColor("000000");
@@ -88,7 +88,7 @@ public class ActSandAcceptanceReportService {
         replaceText(dateRequest.getParagraphs(), "dateRequest", dfquotes.format(actDTO.getDateRequest()));
         replaceText(nameQuarry.getParagraphs(), "nameQuarry", actDTO.getNameQuarry());
 
-        replaceText(gost.getParagraphs(), "GOST", actDTO.getGOST());
+        replaceText(gost.getParagraphs(), "GOST", actDTO.getStandartGOST());
         replaceText(ok.getParagraphs(), "codeOK", actDTO.getCodeOK());
         replaceText(opi.getParagraphs(), "codeOPI", actDTO.getCodeOPI());
 
@@ -110,32 +110,5 @@ public class ActSandAcceptanceReportService {
                 run.setText(text, 0);
             }
         }
-    }
-
-    // метод добавления ряда
-    private static void addCellInRow(XWPFTableRow tableRow, int cell, String text) {
-        XWPFRun runText = styleText(tableRow, cell);
-        runText.setText(text);
-        tableRow.getCell(cell).removeParagraph(0);
-    }
-
-    // стиль текста
-    private static XWPFRun styleText(XWPFTableRow tableRow, int cell) {
-        XWPFTableCell tCell = tableRow.getCell(cell);
-        tCell.setWidth("auto");
-        tCell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-
-        XWPFParagraph paragraph = tCell.addParagraph();
-        paragraph.setAlignment(ParagraphAlignment.CENTER);
-        paragraph.setIndentationFirstLine(0);
-        paragraph.setSpacingBefore(0);
-        paragraph.setSpacingAfter(0);
-
-        XWPFRun runText = paragraph.createRun();
-        runText.setColor("FF0000");
-        runText.setFontFamily("Times New Roman");
-        runText.setFontSize(9);
-
-        return runText;
     }
 }

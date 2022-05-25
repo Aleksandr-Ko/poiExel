@@ -1,4 +1,4 @@
-package gaz.three.sand.dto;
+package gaz.three.crag.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActSandAcceptanceDTO {
-
+public class ActCragAcceptanceDTO {
 
     private String city;                // название города
     private Date dateRequest;           // дата составления запроса
@@ -30,11 +29,11 @@ public class ActSandAcceptanceDTO {
     private String secondFIO;           // подрядчик -> Ф.И.О
     private String secondProxy;         // подрядчик -> основание (доверенность или иные документы)
 
-    private String capacitySand;        // объем песка
+    private String viewCrag;            // вид скальных пород
+    private String capacityCrag;        // объем скальных пород
 
-    private String standartGOST;        // ГОСТ песка
+    private String standartGOST;        // стандарт ГОСТ скальных пород
     private String codeOK;              // код по ОК
     private String codeOPI;             // код вида ОПИ
     private String sheetsNum;           // кол-во листов накладных
-
 }

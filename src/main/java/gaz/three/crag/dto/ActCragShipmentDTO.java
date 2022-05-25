@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActCragAcceptanceDTO {
+public class ActCragShipmentDTO {
 
     private String city;                // название города
     private Date dateRequest;           // дата составления запроса

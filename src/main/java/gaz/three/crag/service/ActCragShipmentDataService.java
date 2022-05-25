@@ -1,14 +1,15 @@
-package gaz.three.clay.service;
+package gaz.three.crag.service;
 
-import gaz.three.clay.dto.ActClayAcceptanceDTO;
+import gaz.three.crag.dto.ActCragShipmentDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ActClayAcceptanceDataService {
+public class ActCragShipmentDataService {
 
-    public ActClayAcceptanceDTO getActClayAcceptanceDTO() {
+
+    public ActCragShipmentDTO getActCragAcceptanceDTO() {
         // заглушка с датой
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
@@ -20,7 +21,7 @@ public class ActClayAcceptanceDataService {
         // формат даты
         SimpleDateFormat dfFull = new SimpleDateFormat("dd MMMM yyyy г.");
 
-        ActClayAcceptanceDTO dto = new ActClayAcceptanceDTO();
+        ActCragShipmentDTO dto = new ActCragShipmentDTO();
 
         dto.setNumQuarry("283-1М");
         dto.setDateRequest(now);
@@ -36,10 +37,10 @@ public class ActClayAcceptanceDataService {
         dto.setContractDate("«04» декабря 2017");
         dto.setPeriodRequest("с "+ dfFull.format(from) + " по " + dfFull.format(to));
 
-        dto.setViewClay("Глина");
+        dto.setViewCrag("Песок (ГОСТ 8736-2014) 800000052 ООО «Регион-Сбыт»");
 
         dto.setNameQuarry("«Пруды-Моховое-Яскинское» АО \"ЛСР. Базовые материалы\"");
-        dto.setCapacityClay("113");
+        dto.setCapacityCrag("113");
         dto.setStandartGOST("80568-2014");
         dto.setCodeOK("142129");
         dto.setCodeOPI("10008");
@@ -47,5 +48,4 @@ public class ActClayAcceptanceDataService {
 
         return  dto;
     }
-
 }

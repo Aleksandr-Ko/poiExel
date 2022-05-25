@@ -1,6 +1,6 @@
-package gaz.three.sand.service;
+package gaz.three.crag.service;
 
-import gaz.three.sand.dto.ActSandAcceptanceDTO;
+import gaz.three.crag.dto.ActCragShipmentDTO;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.core.io.ClassPathResource;
 
@@ -9,27 +9,29 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ActSandAcceptanceReportService {
-    public static void main(String[] args) throws Exception {
-        ActSandAcceptanceReportService report = new ActSandAcceptanceReportService();
+public class ActCragShipmentReportService {
+    public static void main(String[] args) throws IOException {
+        ActCragShipmentReportService report = new ActCragShipmentReportService();
         report.updateDocument();
     }
 
     public void updateDocument() throws IOException {
         // обращение к базе
-        ActSandAcceptanceDataService actData = new ActSandAcceptanceDataService();
-        ActSandAcceptanceDTO actDTO = actData.getActSandAcceptanceDTO();
+        ActCragShipmentDataService actData = new ActCragShipmentDataService();
+        ActCragShipmentDTO actDTO = actData.getActCragAcceptanceDTO();
         // путь к шаблону
-        ClassPathResource f = new ClassPathResource("templateWord/ActSandAcceptance.docx");
+        ClassPathResource f = new ClassPathResource("templateWord/ActCragShipment.docx");
         // чтение документа
         XWPFDocument doc = new XWPFDocument(f.getInputStream());
 
         // изменение документа
         paragraph(doc, actDTO);
         updateInCell(doc, actDTO);
+        addRow(doc, actDTO);
+
 
         // путь и имя сохраняемого файла.
-        String outBasic = "newActSandAcceptance.docx";
+        String outBasic = "newActCragShipment.docx";
         // сохранение документа
         FileOutputStream out = new FileOutputStream(outBasic);
         doc.write(out);
@@ -37,7 +39,7 @@ public class ActSandAcceptanceReportService {
     }
 
     // изменение текста
-    private void paragraph(XWPFDocument doc, ActSandAcceptanceDTO actDTO) {
+    private void paragraph(XWPFDocument doc, ActCragShipmentDTO actDTO) {
         // формат даты
         SimpleDateFormat dfMY = new SimpleDateFormat(" MMMM yyyy г.");
 
@@ -58,26 +60,21 @@ public class ActSandAcceptanceReportService {
                         .replace("contractDate", "" + actDTO.getContractDate())
                         .replace("contractNum", "" + actDTO.getContractNum())
                         .replace("periodRequest", "" + actDTO.getPeriodRequest())
-                        .replace("capacitySand", "" + actDTO.getCapacitySand())
+                        .replace("capacitySand", "" + actDTO.getCapacityCrag())
                         .replace("sheetsNum", "" + actDTO.getSheetsNum());
 
                 run.setText(text, 0);
             }
         }
     }
-
     // изменение текста в ячейке
-    private void updateInCell(XWPFDocument doc, ActSandAcceptanceDTO actDTO) {
+    private void updateInCell(XWPFDocument doc, ActCragShipmentDTO actDTO) {
         SimpleDateFormat dfquotes = new SimpleDateFormat("«dd» MMMM yyyy г.");
 
         XWPFTableCell city = doc.getTableArray(0).getRow(0).getCell(0);
         XWPFTableCell dateRequest = doc.getTableArray(0).getRow(0).getCell(2);
 
         XWPFTableCell nameQuarry = doc.getTableArray(1).getRow(0).getCell(0);
-
-        XWPFTableCell gost = doc.getTableArray(2).getRow(0).getCell(0);
-        XWPFTableCell ok = doc.getTableArray(2).getRow(0).getCell(2);
-        XWPFTableCell opi = doc.getTableArray(2).getRow(0).getCell(4);
 
         XWPFTableCell fPost = doc.getTableArray(4).getRow(0).getCell(0);
         XWPFTableCell sPost = doc.getTableArray(4).getRow(0).getCell(1);
@@ -88,15 +85,24 @@ public class ActSandAcceptanceReportService {
         replaceText(dateRequest.getParagraphs(), "dateRequest", dfquotes.format(actDTO.getDateRequest()));
         replaceText(nameQuarry.getParagraphs(), "nameQuarry", actDTO.getNameQuarry());
 
-        replaceText(gost.getParagraphs(), "GOST", actDTO.getStandartGOST());
-        replaceText(ok.getParagraphs(), "codeOK", actDTO.getCodeOK());
-        replaceText(opi.getParagraphs(), "codeOPI", actDTO.getCodeOPI());
-
         replaceText(fPost.getParagraphs(), "firstPost", actDTO.getFirstPost());
         replaceText(sPost.getParagraphs(), "secondPost", actDTO.getSecondPost());
         replaceText(fFIO.getParagraphs(), "firstFIO", actDTO.getFirstFIO());
         replaceText(sFIO.getParagraphs(), "secondFIO", actDTO.getSecondFIO());
 
+    }
+    // добавление ряда
+    private void addRow(XWPFDocument doc, ActCragShipmentDTO actDTO) {
+        XWPFTable table = doc.getTableArray(2);
+
+        XWPFTableRow row = table.createRow();
+
+        addCellInRow(row, 0, "1");
+        addCellInRow(row, 1, actDTO.getViewCrag());
+        addCellInRow(row, 2, actDTO.getCodeOK());
+        addCellInRow(row, 3, actDTO.getCodeOPI());
+        addCellInRow(row, 4, actDTO.getStandartGOST());
+        addCellInRow(row, 5, actDTO.getCapacityCrag());
     }
 
     // метод для замены текста в ячейке
@@ -111,4 +117,32 @@ public class ActSandAcceptanceReportService {
             }
         }
     }
+
+    // метод добавления ряда
+    private static void addCellInRow(XWPFTableRow tableRow, int cell, String text) {
+        XWPFRun runText = styleText(tableRow, cell);
+        runText.setText(text);
+        tableRow.getCell(cell).removeParagraph(0);
+    }
+
+    // стиль текста
+    private static XWPFRun styleText(XWPFTableRow tableRow, int cell) {
+        XWPFTableCell tCell = tableRow.getCell(cell);
+        tCell.setWidth("auto");
+        tCell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
+
+        XWPFParagraph paragraph = tCell.addParagraph();
+        paragraph.setAlignment(ParagraphAlignment.CENTER);
+        paragraph.setIndentationFirstLine(0);
+        paragraph.setSpacingBefore(0);
+        paragraph.setSpacingAfter(0);
+
+        XWPFRun runText = paragraph.createRun();
+        runText.setColor("FF0000");
+        runText.setFontFamily("Times New Roman");
+        runText.setFontSize(9);
+
+        return runText;
+    }
+
 }

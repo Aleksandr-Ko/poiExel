@@ -1,6 +1,6 @@
 package gaz.three.clay.service;
 
-import gaz.three.clay.dto.ActClayAcceptanceDTO;
+import gaz.three.clay.dto.ActClayShipmentDTO;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.core.io.ClassPathResource;
 
@@ -9,19 +9,19 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ActClayAcceptanceReportService {
+public class ActClayShipmentReportService {
 
     public static void main(String[] args) throws IOException {
-        ActClayAcceptanceReportService act = new ActClayAcceptanceReportService();
+        ActClayShipmentReportService act = new ActClayShipmentReportService();
         act.updateDocument();
     }
 
     public void updateDocument() throws IOException {
         // обращение к базе
-        ActClayAcceptanceDataService actData = new ActClayAcceptanceDataService();
-        ActClayAcceptanceDTO actDTO = actData.getActClayAcceptanceDTO();
+        ActClayShipmentDataService actData = new ActClayShipmentDataService();
+        ActClayShipmentDTO actDTO = actData.getActClayAcceptanceDTO();
         // путь к шаблону
-        ClassPathResource f = new ClassPathResource("templateWord/ActClayAcceptance.docx");
+        ClassPathResource f = new ClassPathResource("templateWord/ActClayShipment.docx");
         // чтение документа
         XWPFDocument doc = new XWPFDocument(f.getInputStream());
 
@@ -32,7 +32,7 @@ public class ActClayAcceptanceReportService {
 
 
         // путь и имя сохраняемого файла.
-        String outBasic = "newActClayAcceptance.docx";
+        String outBasic = "newActClayShipment.docx";
         // сохранение документа
         FileOutputStream out = new FileOutputStream(outBasic);
         doc.write(out);
@@ -40,7 +40,7 @@ public class ActClayAcceptanceReportService {
     }
 
 
-    private void paragraph(XWPFDocument doc, ActClayAcceptanceDTO actDTO) {
+    private void paragraph(XWPFDocument doc, ActClayShipmentDTO actDTO) {
         // формат даты
         SimpleDateFormat dfMY = new SimpleDateFormat(" MMMM yyyy г.");
 
@@ -70,7 +70,7 @@ public class ActClayAcceptanceReportService {
     }
 
     // изменение текста в ячейке
-    private void updateInCell(XWPFDocument doc, ActClayAcceptanceDTO actDTO) {
+    private void updateInCell(XWPFDocument doc, ActClayShipmentDTO actDTO) {
         SimpleDateFormat dfquotes = new SimpleDateFormat("«dd» MMMM yyyy г.");
 
         XWPFTableCell city = doc.getTableArray(0).getRow(0).getCell(0);
@@ -95,7 +95,7 @@ public class ActClayAcceptanceReportService {
     }
 
     // добавление ряда
-    private void addRow(XWPFDocument doc, ActClayAcceptanceDTO actDTO) {
+    private void addRow(XWPFDocument doc, ActClayShipmentDTO actDTO) {
         XWPFTable table = doc.getTableArray(2);
 
         XWPFTableRow row = table.createRow();

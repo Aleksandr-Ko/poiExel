@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActSandAcceptanceDTO {
+public class ActSandShipmentDTO {
 
 
     private String city;                // название города

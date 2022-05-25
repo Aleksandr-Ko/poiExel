@@ -1,6 +1,6 @@
-package gaz.three.crag.service;
+package gaz.four.crag.service;
 
-import gaz.three.crag.dto.ActCragShipmentDTO;
+import gaz.four.crag.dto.ActCragReceptionDTO;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.core.io.ClassPathResource;
 
@@ -9,18 +9,18 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ActCragShipmentReportService {
-    public static void main(String[] args) throws IOException {
-        ActCragShipmentReportService report = new ActCragShipmentReportService();
+public class ActCragReceptionReportService {
+    public static void main(String[] args)throws IOException {
+        ActCragReceptionReportService report = new ActCragReceptionReportService();
         report.updateDocument();
     }
 
     public void updateDocument() throws IOException {
         // обращение к базе
-        ActCragShipmentDataService actData = new ActCragShipmentDataService();
-        ActCragShipmentDTO actDTO = actData.getActCragAcceptanceDTO();
+        ActCragReceptionDataService actData = new ActCragReceptionDataService();
+        ActCragReceptionDTO actDTO = actData.getActCragReceptionDTO();
         // путь к шаблону
-        ClassPathResource f = new ClassPathResource("templateWord/ActCragShipment.docx");
+        ClassPathResource f = new ClassPathResource("templateWord/ActCragReception.docx");
         // чтение документа
         XWPFDocument doc = new XWPFDocument(f.getInputStream());
 
@@ -29,9 +29,8 @@ public class ActCragShipmentReportService {
         updateInCell(doc, actDTO);
         addRow(doc, actDTO);
 
-
         // путь и имя сохраняемого файла.
-        String outBasic = "newActCragShipment.docx";
+        String outBasic = "newActCragReception.docx";
         // сохранение документа
         FileOutputStream out = new FileOutputStream(outBasic);
         doc.write(out);
@@ -39,7 +38,7 @@ public class ActCragShipmentReportService {
     }
 
     // изменение текста
-    private void paragraph(XWPFDocument doc, ActCragShipmentDTO actDTO) {
+    private void paragraph(XWPFDocument doc, ActCragReceptionDTO actDTO) {
         // формат даты
         SimpleDateFormat dfMY = new SimpleDateFormat(" MMMM yyyy г.");
 
@@ -47,50 +46,51 @@ public class ActCragShipmentReportService {
         for (XWPFParagraph para : listParagraph) {
             for (XWPFRun run : para.getRuns()) {
 //                run.setColor("000000");
-                String text = run.getText(0);
-                text = text.replace("numQuarry", "" + actDTO.getNumQuarry())
-                        // TODO ->  какую дату выводить? (запрос, составления или отчетного периода)
-                        .replace("dateRequest", dfMY.format(actDTO.getDateRequest()))
-                        .replace("firstPost", "" + actDTO.getFirstPost())
-                        .replace("firstFIO", "" + actDTO.getFirstFIO())
-                        .replace("firstProxy", "" + actDTO.getFirstProxy())
-                        .replace("secondPost", "" + actDTO.getSecondPost())
-                        .replace("secondFIO", "" + actDTO.getSecondFIO())
-                        .replace("secondProxy", "" + actDTO.getSecondProxy())
-                        .replace("contractDate", "" + actDTO.getContractDate())
-                        .replace("contractNum", "" + actDTO.getContractNum())
-                        .replace("periodRequest", "" + actDTO.getPeriodRequest())
-                        .replace("capacitySand", "" + actDTO.getCapacityCrag())
-                        .replace("sheetsNum", "" + actDTO.getSheetsNum());
+                    String text = run.getText(0);
+                    text = text.replace("numQuarry", "" + actDTO.getNumQuarry())
+                            .replace("nameQuarry", actDTO.getNameQuarry())
+                            // TODO ->  какую дату выводить? (запрос, составления или отчетного периода)
+                            .replace("dateRequest", dfMY.format(actDTO.getDateRequest()))
+                            .replace("firstPost", actDTO.getFirstPost())
+                            .replace("firstFIO", actDTO.getFirstFIO())
+                            .replace("firstProxy", actDTO.getFirstProxy())
+                            .replace("secondPost", actDTO.getSecondPost())
+                            .replace("secondFIO", actDTO.getSecondFIO())
+                            .replace("secondProxy", actDTO.getSecondProxy())
+                            .replace("contractDate", actDTO.getContractDate())
+                            .replace("contractNum", actDTO.getContractNum())
+                            .replace("periodRequest", actDTO.getPeriodRequest())
+                            .replace("capacitySand", actDTO.getCapacityCrag())
+                            .replace("sheetsNum", actDTO.getSheetsNum());
 
-                run.setText(text, 0);
+                    run.setText(text, 0);
+
             }
         }
     }
-    // изменение текста в ячейке
-    private void updateInCell(XWPFDocument doc, ActCragShipmentDTO actDTO) {
+
+    private void updateInCell(XWPFDocument doc, ActCragReceptionDTO actDTO) {
         SimpleDateFormat dfquotes = new SimpleDateFormat("«dd» MMMM yyyy г.");
 
         XWPFTableCell city = doc.getTableArray(0).getRow(0).getCell(0);
         XWPFTableCell dateRequest = doc.getTableArray(0).getRow(0).getCell(2);
-        XWPFTableCell nameQuarry = doc.getTableArray(1).getRow(0).getCell(0);
-        XWPFTableCell fPost = doc.getTableArray(4).getRow(0).getCell(0);
-        XWPFTableCell sPost = doc.getTableArray(4).getRow(0).getCell(1);
-        XWPFTableCell fFIO = doc.getTableArray(4).getRow(1).getCell(0);
-        XWPFTableCell sFIO = doc.getTableArray(4).getRow(1).getCell(1);
+        XWPFTableCell fPost = doc.getTableArray(2).getRow(0).getCell(0);
+        XWPFTableCell sPost = doc.getTableArray(2).getRow(0).getCell(1);
+        XWPFTableCell fFIO = doc.getTableArray(2).getRow(1).getCell(0);
+        XWPFTableCell sFIO = doc.getTableArray(2).getRow(1).getCell(1);
 
         replaceText(city.getParagraphs(), "city", actDTO.getCity());
         replaceText(dateRequest.getParagraphs(), "dateRequest", dfquotes.format(actDTO.getDateRequest()));
-        replaceText(nameQuarry.getParagraphs(), "nameQuarry", actDTO.getNameQuarry());
         replaceText(fPost.getParagraphs(), "firstPost", actDTO.getFirstPost());
         replaceText(sPost.getParagraphs(), "secondPost", actDTO.getSecondPost());
         replaceText(fFIO.getParagraphs(), "firstFIO", actDTO.getFirstFIO());
         replaceText(sFIO.getParagraphs(), "secondFIO", actDTO.getSecondFIO());
 
     }
+
     // добавление ряда
-    private void addRow(XWPFDocument doc, ActCragShipmentDTO actDTO) {
-        XWPFTable table = doc.getTableArray(2);
+    private void addRow(XWPFDocument doc, ActCragReceptionDTO actDTO) {
+        XWPFTable table = doc.getTableArray(1);
 
         XWPFTableRow row = table.createRow();
 
@@ -98,7 +98,7 @@ public class ActCragShipmentReportService {
         addCellInRow(row, 1, actDTO.getViewCrag());
         addCellInRow(row, 2, actDTO.getCodeOK());
         addCellInRow(row, 3, actDTO.getCodeOPI());
-        addCellInRow(row, 4, actDTO.getStandartGOST());
+        addCellInRow(row, 4, actDTO.getCragGOST());
         addCellInRow(row, 5, actDTO.getCapacityCrag());
     }
 
@@ -141,5 +141,4 @@ public class ActCragShipmentReportService {
 
         return runText;
     }
-
 }

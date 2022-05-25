@@ -10,7 +10,6 @@ public class ActSandReceptionDataService {
 
     public ActSandReceptionDTO getActSandReceptionDTO (){
 
-
         // заглушка с датой
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();

@@ -13,12 +13,8 @@ public class NeedsOPIReportService {
 
     public static void main(String[] args) throws IOException {
         NeedsOPIReportService requestOPI = new NeedsOPIReportService();
-//        requestOPI.updateDocument();
-
-
+        requestOPI.updateDocument();
     }
-
-
 
     public void updateDocument() throws IOException {
         // путь к шаблону

@@ -11,6 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class ActSandReceptionDTO {
 
+
     private String city;                // название города
     private Date dateRequest;           // дата составления запроса
     private String periodRequest;       // отчетный период

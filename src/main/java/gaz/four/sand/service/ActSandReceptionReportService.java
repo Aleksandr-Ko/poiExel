@@ -19,6 +19,7 @@ public class ActSandReceptionReportService {
         report.updateDocument();
     }
 
+
     public void updateDocument() throws IOException {
         // обращение к базе
         ActSandReceptionDataService actData = new ActSandReceptionDataService();

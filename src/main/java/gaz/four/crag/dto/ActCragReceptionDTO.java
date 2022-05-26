@@ -26,11 +26,11 @@ public class ActCragReceptionDTO {
     private String secondFIO;           // генподрядчик -> Ф.И.О
     private String secondProxy;         // генподрядчик -> основание (доверенность или иные документы)
 
-    private String contractDate;        // дата договора
-    private String contractNum;         // номер договора
+    private String contractDate;        // дата договора генерального подряда
+    private String contractNum;         // номер договора генерального подряда
 
     private String viewCrag;            // вид скальных пород
-    private String capacityCrag;        // объем песка
+    private String capacityCrag;        // объем скальных пород
 
     private String cragGOST;            // стандарт ГОСТ скальных пород
     private String codeOK;              // код по ОК

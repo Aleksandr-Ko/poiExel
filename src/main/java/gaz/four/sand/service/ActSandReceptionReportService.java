@@ -59,7 +59,7 @@ public class ActSandReceptionReportService {
                             .replace("firstProxy", actDTO.getFirstProxy())
                             .replace("secondPost", actDTO.getSecondPost())
                             .replace("secondFIO", actDTO.getSecondFIO())
-                            .replace("secondProxy",  actDTO.getSecondProxy())
+                            .replace("secondProxy", actDTO.getSecondProxy())
                             .replace("contractDate", actDTO.getContractDate())
                             .replace("contractNum", actDTO.getContractNum())
                             .replace("periodRequest", actDTO.getPeriodRequest())

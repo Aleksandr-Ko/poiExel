@@ -1,4 +1,4 @@
-package gaz.four.sand.dto;
+package gaz.four.clay.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActSandReceptionDTO {
+public class ActClayReceptionDTO {
 
     private String city;                // название города
     private Date dateRequest;           // дата составления запроса
@@ -29,11 +29,11 @@ public class ActSandReceptionDTO {
     private String contractDate;        // дата договора генерального подряда
     private String contractNum;         // номер договора генерального подряда
 
-    private String capacitySand;        // объем песка
+    private String viewClay;            // вид глинистых грунтов
+    private String capacityClay;        // объем глинистых грунтов
 
-    private String sandGOST;            // стандарт ГОСТ песок
+    private String clayGOST;            // стандарт ГОСТ глинистых грунтов
     private String codeOK;              // код по ОК
     private String codeOPI;             // код вида ОПИ
     private String sheetsNum;           // кол-во листов накладных
-
 }

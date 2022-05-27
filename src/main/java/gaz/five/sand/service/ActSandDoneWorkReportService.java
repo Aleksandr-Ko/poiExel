@@ -4,6 +4,7 @@ import gaz.five.sand.dto.ActSandDoneWorkDTO;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.FileOutputStream;
@@ -23,7 +24,7 @@ public class ActSandDoneWorkReportService {
         // обращение к базе
         ActSandDoneWorkDataService actData = new ActSandDoneWorkDataService();
         ActSandDoneWorkDTO actDTO = actData.getActSandDoneWorkDTO();
-        // путь к шаблону
+        // путь и имя шаблону
         ClassPathResource f = new ClassPathResource("templateWord/ActSandDoneWork.docx");
         String outBasic = "newActSandDoneWork.docx";
         // чтение документа и запись документа
@@ -32,7 +33,7 @@ public class ActSandDoneWorkReportService {
 
             // изменение документа
             paragraph(doc, actDTO);
-//            updateInCell(doc, actDTO);
+            updateInCell(doc, actDTO);
 
             // сохранение документа
             doc.write(out);
@@ -75,6 +76,39 @@ public class ActSandDoneWorkReportService {
                         .replace("paymentNDS", actDTO.getPaymentNDS())
                         .replace("payment", actDTO.getPayment());
 
+                run.setText(text, 0);
+            }
+        }
+    }
+
+    // изменение текста в ячейке
+    private void updateInCell(XWPFDocument doc, ActSandDoneWorkDTO actDTO) {
+        SimpleDateFormat dfquotes = new SimpleDateFormat("«dd» MMMM yyyy г.");
+
+        XWPFTableCell city = doc.getTableArray(0).getRow(0).getCell(0);
+        XWPFTableCell dateRequest = doc.getTableArray(0).getRow(0).getCell(2);
+        XWPFTableCell gost = doc.getTableArray(1).getRow(0).getCell(0);
+        XWPFTableCell ok = doc.getTableArray(1).getRow(0).getCell(2);
+        XWPFTableCell opi = doc.getTableArray(1).getRow(0).getCell(4);
+        XWPFTableCell license = doc.getTableArray(1).getRow(2).getCell(1);
+
+
+        replaceText(city.getParagraphs(), "city", actDTO.getCity());
+        replaceText(dateRequest.getParagraphs(), "dateRequest", dfquotes.format(actDTO.getDateRequest()));
+        replaceText(gost.getParagraphs(), "GOST", actDTO.getSandGOST());
+        replaceText(ok.getParagraphs(), "codeOK", actDTO.getCodeOK());
+        replaceText(opi.getParagraphs(), "codeOPI", actDTO.getCodeOPI());
+        replaceText(license.getParagraphs(), "license", actDTO.getLicense());
+    }
+
+    // метод для замены текста в ячейке
+    private void replaceText(List<XWPFParagraph> listParagraph, String oldVal, String newVal) {
+        for (XWPFParagraph para : listParagraph) {
+            for (XWPFRun run : para.getRuns()) {
+//                run.setColor("000000");
+                run.setFontSize(11);
+                String text = run.getText(0);
+                text = text.replace(oldVal, newVal);
                 run.setText(text, 0);
             }
         }

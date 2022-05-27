@@ -23,7 +23,7 @@ public class ActSandDoneWorkDataService {
 
         ActSandDoneWorkDTO dto = new ActSandDoneWorkDTO();
 
-        dto.setNumQuarry("Карьер №2");
+        dto.setNumQuarry("2");
         dto.setNameQuarry("Месторождение каких-то там пород");
         dto.setDateRequest(now);
         dto.setCity("Санкт-Петербург");
@@ -33,7 +33,7 @@ public class ActSandDoneWorkDataService {
         dto.setSecondPost("заместителя начальника управления исполнения договоров подготовки производства "
                 + "ООО «Газпром инвест»");
         dto.setSecondFIO("Черепанов Дмитрий Андреевич");
-        dto.setSecondProxy("доверенности от 09 ноября 2020 года № 01/04/04-564д");
+        dto.setSecondProxy("доверенности от 15 июля 2020 года № 01/8158");
         dto.setPeriodRequest("c " + dfFull.format(from) + " по " + dfFull.format(to));
         dto.setContractDate("04 декабря 2017");
         dto.setContractNum("ОПИ-51");

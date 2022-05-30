@@ -1,5 +1,4 @@
-package gaz.five.crag.dto;
-
+package gaz.five.clay.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +8,12 @@ import java.util.Date;
 
 /**
  * АКТ
- * выполненных работ по добыче Скальных пород
+ * выполненных работ по добыче Глинистых грунтов
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActCragDoneWorkDTO {
+public class ActClayDoneWorkDTO {
 
     private String city;                // название города
     private Date dateRequest;           // дата составления запроса
@@ -36,14 +35,14 @@ public class ActCragDoneWorkDTO {
 
     private String license;             // вид Лицензии, серия и номер
 
-    private String viewCrag;            // вид скальных пород
-    private String capacityCrag;        // объем скальных пород
+    private String viewClay;            // вид глинистых пород
+    private String capacityClay;        // объем глинистых пород
 
-    private String cragGOST;            // стандарт ГОСТ скальных пород
+    private String clayGOST;            // стандарт ГОСТ глинистых пород
     private String codeOK;              // код по ОК
     private String codeOPI;             // код вида ОПИ
 
-    private String costWork;            // стоимость работ по добыче Скальных пород
+    private String costWork;            // стоимость работ по добыче глинистых пород
     private String costWorkNDS;         // НДС от стоимости
     private String costWorkTotal;       // стоимость + НДС
 
@@ -57,5 +56,4 @@ public class ActCragDoneWorkDTO {
 
     private String payment;             // полная стоимость по акту
     private String paymentNDS;          // НДС от полной стоимости
-
 }

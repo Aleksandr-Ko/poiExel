@@ -19,23 +19,22 @@ public class ActSandDoneWorkReportService {
         report.updateDocument();
     }
 
-
     public void updateDocument() throws IOException {
-        // обращение к базе
+// обращение к базе
         ActSandDoneWorkDataService actData = new ActSandDoneWorkDataService();
         ActSandDoneWorkDTO actDTO = actData.getActSandDoneWorkDTO();
-        // путь и имя шаблону
+// путь и имя шаблону
         ClassPathResource f = new ClassPathResource("templateWord/ActSandDoneWork.docx");
         String outBasic = "newActSandDoneWork.docx";
-        // чтение документа и запись документа
+// чтение документа и запись документа
         try (XWPFDocument doc = new XWPFDocument(f.getInputStream());
              FileOutputStream out = new FileOutputStream(outBasic)) {
 
-            // изменение документа
+// изменение документа
             paragraph(doc, actDTO);
             updateInCell(doc, actDTO);
 
-            // сохранение документа
+// сохранение документа
             doc.write(out);
         }
     }
@@ -91,7 +90,6 @@ public class ActSandDoneWorkReportService {
         XWPFTableCell ok = doc.getTableArray(1).getRow(0).getCell(2);
         XWPFTableCell opi = doc.getTableArray(1).getRow(0).getCell(4);
         XWPFTableCell license = doc.getTableArray(1).getRow(2).getCell(1);
-
 
         replaceText(city.getParagraphs(), "city", actDTO.getCity());
         replaceText(dateRequest.getParagraphs(), "dateRequest", dfquotes.format(actDTO.getDateRequest()));

@@ -1,14 +1,14 @@
-package gaz.five.sand.service;
+package gaz.five.clay.service;
 
-import gaz.five.sand.dto.ActSandDoneWorkDTO;
+import gaz.five.clay.dto.ActClayDoneWorkDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ActSandDoneWorkDataService {
+public class ActClayDoneWorkDataService {
 
-    public ActSandDoneWorkDTO getActSandDoneWorkDTO() {
+    public ActClayDoneWorkDTO getActClayDoneWorkDTO () {
 
 // заглушка с датой
         Date now = new Date();
@@ -21,7 +21,7 @@ public class ActSandDoneWorkDataService {
 // формат даты
         SimpleDateFormat dfFull = new SimpleDateFormat("dd MMMM yyyy г.");
 
-        ActSandDoneWorkDTO dto = new ActSandDoneWorkDTO();
+        ActClayDoneWorkDTO dto = new ActClayDoneWorkDTO();
 
         dto.setNumQuarry("2");
         dto.setNameQuarry("Месторождение каких-то там пород");
@@ -37,30 +37,24 @@ public class ActSandDoneWorkDataService {
         dto.setPeriodRequest("c " + dfFull.format(from) + " по " + dfFull.format(to));
         dto.setContractDate("04 декабря 2017");
         dto.setContractNum("ОПИ-51");
-        dto.setCapacitySand("113");
-        dto.setSandGOST("80568-2014");
-        dto.setCodeOK("142129");
-        dto.setCodeOPI("10008");
         dto.setLicense("СЛХ 81417 ТЭ");
-        dto.setCostWork("39 241 357 (Тридцать девять миллионов двести сорок одна тысяча триста пятьдесят семь"
-                + " рублей 76коп.");
-        dto.setCostWorkNDS("7 848 271 (семь миллионов восемьсот сорок восемь тысяч двести семьдесят один"
-                + ") рубль 55 коп.");
-        dto.setCostWorkTotal("47 089 629 (сорок семь миллионов восемьдесят девять тысяч шестьсот двадцать девять"
-                + ") рублей 31 коп.");
+        dto.setCostWork("39241357.76");
+        dto.setCostWorkNDS("7848271.55");
+        dto.setCostWorkTotal("47089629.31");
         dto.setNumPaymentOrder("-");
         dto.setDatePaymentOrder("-");
         dto.setPrepayPercentage("-");
         dto.setPrepay("-");
         dto.setPrepayNDS("-");
-        dto.setDeferPay("2 354 481 (Два миллиона триста пятьдесят четыре тысячи четыреста восемьдесят один"
-                + ") рубль 47 коп");
-        dto.setPayment("44 735 147 (сорок четыре миллиона семьсот тридцать пять тысяч сто сорок семь)"
-                + " рублей 84 коп.");
-        dto.setPaymentNDS("7 455 857 (Семь миллионов четыреста пятьдесят пять тысяч восемьсот пятьдесят семь"
-                + ") рублей 97 коп.");
+        dto.setDeferPay("2354481.47");
+        dto.setPayment("44735147.84");
+        dto.setPaymentNDS("7455857.97");
+        dto.setViewClay("Глинистых пород");
+        dto.setCapacityClay("113");
+        dto.setClayGOST("80568-2014");
+        dto.setCodeOK("142129");
+        dto.setCodeOPI("10008");
 
         return dto;
-
     }
 }

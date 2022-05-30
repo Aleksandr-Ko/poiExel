@@ -17,33 +17,6 @@ public class ActClayDoneWorkReportService {
         report.updateDocument();
     }
 
-    // метод добавления ряда
-    private static void addCellInRow(XWPFTableRow tableRow, int cell, String text) {
-        XWPFRun runText = styleText(tableRow, cell);
-        runText.setText(text);
-        tableRow.getCell(cell).removeParagraph(0);
-    }
-
-    // стиль текста
-    private static XWPFRun styleText(XWPFTableRow tableRow, int cell) {
-        XWPFTableCell tCell = tableRow.getCell(cell);
-        tCell.setWidth("auto");
-        tCell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-
-        XWPFParagraph paragraph = tCell.addParagraph();
-        paragraph.setAlignment(ParagraphAlignment.CENTER);
-        paragraph.setIndentationFirstLine(0);
-        paragraph.setSpacingBefore(0);
-        paragraph.setSpacingAfter(0);
-
-        XWPFRun runText = paragraph.createRun();
-        runText.setColor("FF0000");
-        runText.setFontFamily("Times New Roman");
-        runText.setFontSize(9);
-
-        return runText;
-    }
-
     public void updateDocument() throws IOException {
 // обращение к базе
         ActClayDoneWorkDataService actData = new ActClayDoneWorkDataService();
@@ -154,6 +127,26 @@ public class ActClayDoneWorkReportService {
         addCellInRow(row1, 4, actDTO.getCostWorkTotal());
     }
 
+    // стиль текста
+    private XWPFRun styleText(XWPFTableRow tableRow, int cell) {
+        XWPFTableCell tCell = tableRow.getCell(cell);
+        tCell.setWidth("auto");
+        tCell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
+
+        XWPFParagraph paragraph = tCell.addParagraph();
+        paragraph.setAlignment(ParagraphAlignment.CENTER);
+        paragraph.setIndentationFirstLine(0);
+        paragraph.setSpacingBefore(0);
+        paragraph.setSpacingAfter(0);
+
+        XWPFRun runText = paragraph.createRun();
+        runText.setColor("FF0000");
+        runText.setFontFamily("Times New Roman");
+        runText.setFontSize(9);
+
+        return runText;
+    }
+
     // метод для замены текста в ячейке
     private void replaceText(List<XWPFParagraph> listParagraph, String oldVal, String newVal) {
         for (XWPFParagraph para : listParagraph) {
@@ -165,6 +158,13 @@ public class ActClayDoneWorkReportService {
                 run.setText(text, 0);
             }
         }
+    }
+
+    // метод добавления ряда
+    private void addCellInRow(XWPFTableRow tableRow, int cell, String text) {
+        XWPFRun runText = styleText(tableRow, cell);
+        runText.setText(text);
+        tableRow.getCell(cell).removeParagraph(0);
     }
 
     // метод для написания суммы прописью

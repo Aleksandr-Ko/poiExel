@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+/**
+ * Отчет Подрядчика об исполнении поручений
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,6 +1,6 @@
-package gaz.six.service;
+package gaz.seven.service;
 
-import gaz.six.dto.ObtainOPIDTO;
+import gaz.seven.dto.ExecutionErrandDTO;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.core.io.ClassPathResource;
 
@@ -9,38 +9,37 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ObtainOPIReportService {
+public class ExecutionErrandReportService {
+
     public static void main(String[] args) throws IOException {
-        ObtainOPIReportService report = new ObtainOPIReportService();
+        ExecutionErrandReportService report = new ExecutionErrandReportService();
         report.updateDocument();
     }
 
     public void updateDocument() throws IOException {
 // обращение к сервисам
-        ObtainOPIDataService obtainData = new ObtainOPIDataService();
-        ObtainOPIDTO obtainDTO = obtainData.getObtainOPIDTO();
+        ExecutionErrandDataService dataExErr = new ExecutionErrandDataService();
+        ExecutionErrandDTO exErrDTO = dataExErr.getExecutionErrandDTO();
 // путь и имя шаблону
-        ClassPathResource f = new ClassPathResource("templateWord/ObtainOPI.docx");
-        String outBasic = "new_ObtainOPI.docx";
+        ClassPathResource f = new ClassPathResource("templateWord/ExecutionErrand.docx");
+        String outBasic = "new_ExecutionErrand.docx";
 // чтение документа и запись документа
         try (XWPFDocument doc = new XWPFDocument(f.getInputStream());
              FileOutputStream out = new FileOutputStream(outBasic)) {
 
 // изменение документа
-            paragraph(doc, obtainDTO);
-            updateInCell(doc, obtainDTO);
-            addTextCell(doc, obtainDTO);
+            paragraph(doc, exErrDTO);
+            updateInCell(doc, exErrDTO);
             addRow(doc);
-
 
 // сохранение документа
             doc.write(out);
         }
-        System.out.println("\n \\\\ new_ObtainOPI //");
+        System.out.println("\n \\\\ new_ExecutionErrand //");
     }
 
     // изменение текста
-    private void paragraph(XWPFDocument doc, ObtainOPIDTO dto) {
+    private void paragraph(XWPFDocument doc, ExecutionErrandDTO dto) {
 // формат даты
         SimpleDateFormat dfMY = new SimpleDateFormat(" MMMM yyyy г.");
 
@@ -52,9 +51,11 @@ public class ObtainOPIReportService {
                 text = text.replace("contractorPost", dto.getContractorPost())
                         .replace("contractorFIO", dto.getContractorFIO())
                         .replace("contractorProxy", dto.getContractorProxy())
-                        .replace("costWorkTotal", dto.getCostWorkTotal())
                         .replace("costWorkNDS", dto.getCostWorkNDS())
                         .replace("costWork", dto.getCostWork())
+                        .replace("priceLicenseTotal", dto.getPriceLicenseTotal())
+                        .replace("priceLicenseNDS", dto.getPriceLicenseNDS())
+                        .replace("priceLicense", dto.getPriceLicense())
 // TODO -> какую дату выводить? (запрос, составления или отчетного периода)
                         .replace("dateRequest", dfMY.format(dto.getDateRequest()))
                         .replace("contractDate", dto.getContractDate())
@@ -67,7 +68,7 @@ public class ObtainOPIReportService {
     }
 
     // изменение текста в ячейке
-    private void updateInCell(XWPFDocument doc, ObtainOPIDTO dto) {
+    private void updateInCell(XWPFDocument doc, ExecutionErrandDTO dto) {
         SimpleDateFormat dfQuotes = new SimpleDateFormat("«dd» MMMM yyyy г.");
 
         XWPFTableCell city = doc.getTableArray(0).getRow(0).getCell(0);
@@ -77,46 +78,38 @@ public class ObtainOPIReportService {
         replaceText(dateRequest.getParagraphs(), "dateRequest", dfQuotes.format(dto.getDateRequest()));
     }
 
-    private void addTextCell(XWPFDocument doc, ObtainOPIDTO dto) {
-
-        XWPFTableRow row2 = doc.getTableArray(2).getRow(2);
-        XWPFTableRow row3 = doc.getTableArray(2).getRow(3);
-        XWPFTableRow row4 = doc.getTableArray(2).getRow(4);
-        XWPFTableRow row5 = doc.getTableArray(2).getRow(5);
-        XWPFTableRow row6 = doc.getTableArray(2).getRow(6);
-        XWPFTableRow row7 = doc.getTableArray(2).getRow(7);
-
-        addCellInRow(row2, 1, "viewOPI");
-        addCellInRow(row5, 1, "viewOPI");
-
-        for (int i = 2; i < row2.getTableCells().size(); i++) {
-            addCellInRow(row2, i, "2.1");
-            addCellInRow(row3, i, "3.1");
-            addCellInRow(row5, i, "5.1");
-            addCellInRow(row6, i, "6.1");
-            if (i > 4 & i < 8) {
-                addCellInRow(row4, i, "4.1");
-                addCellInRow(row7, i, "7.1");
-            }
-        }
-
-
-    }
-
     // добавление ряда
     private void addRow(XWPFDocument doc) {
         XWPFTable table1 = doc.getTableArray(1);
+        XWPFTable table2 = doc.getTableArray(2);
         XWPFTable table3 = doc.getTableArray(3);
+        XWPFTable table4 = doc.getTableArray(3);
 
         XWPFTableRow row1 = table1.createRow();
+        XWPFTableRow row2 = table2.createRow();
         XWPFTableRow row3 = table3.createRow();
+        XWPFTableRow row4 = table4.createRow();
+
 
         for (int i = 0; i < row1.getTableCells().size(); i++) {
             addCellInRow(row1, i, "1");
         }
-
+        for (int i = 0; i < row2.getTableCells().size(); i++) {
+            addCellInRow(row2, i, "2");
+        }
         for (int i = 0; i < row3.getTableCells().size(); i++) {
-            addCellInRow(row3, i, "11");
+            addCellInRow(row3, i, "3");
+        }
+        for (int i = 0; i < row4.getTableCells().size(); i++) {
+            if (i == 0) {
+                addCellInRow(row4, i, "");
+            } else if (i == 1) {
+                addCellInRow(row4, i, "Итого:");
+            } else if (i == 3) {
+                addCellInRow(row4, i, "23649.51");
+            }else{
+                addCellInRow(row4, i, "X");
+            }
         }
     }
 
@@ -126,7 +119,7 @@ public class ObtainOPIReportService {
         for (XWPFParagraph para : listParagraph) {
             for (XWPFRun run : para.getRuns()) {
 //                run.setColor("000000");
-                run.setFontSize(12.5);
+                run.setFontSize(12);
                 String text = run.getText(0);
                 text = text.replace(oldVal, newVal);
                 run.setText(text, 0);

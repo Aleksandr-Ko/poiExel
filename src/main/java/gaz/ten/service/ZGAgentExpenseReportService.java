@@ -1,5 +1,6 @@
 package gaz.ten.service;
 
+import gaz.ten.dto.ZGAgentExpenseDTO;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -8,15 +9,22 @@ import org.apache.poi.ss.util.PropertyTemplate;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
-public class Ten_10_ReportService {
+public class ZGAgentExpenseReportService {
     public static void main(String[] args) throws IOException {
-        Ten_10_ReportService tn = new Ten_10_ReportService();
-        tn.createReport("10.xls");
+
+        ZGAgentExpenseDTO dto = new ZGAgentExpenseDTO();
+
+        ZGAgentExpenseDataService data = new ZGAgentExpenseDataService();
+        data.getZGAgentExpenseDTO(dto);
+
+        ZGAgentExpenseReportService tn = new ZGAgentExpenseReportService();
+        tn.createReport("10.xls", dto);
     }
 
 
-    public void createReport(String file) throws IOException {
+    public void createReport(String file, ZGAgentExpenseDTO dto) throws IOException {
         // создание документа
         Workbook book = new HSSFWorkbook();
         // создаём лист в документе
@@ -42,11 +50,12 @@ public class Ten_10_ReportService {
 
         // наполнение документа
         nameColumn(book, sheet);
+        filling(book, dto);
 
         // отображение границ таблицы
         PropertyTemplate propertyTemplate = new PropertyTemplate();
-        // TODO -> заменить рисование границ на всю область данных
-        propertyTemplate.drawBorders(new CellRangeAddress(0, 2, 0, 19),BorderStyle.THIN, BorderExtent.ALL);
+        propertyTemplate.drawBorders(new CellRangeAddress(0, sheet.getLastRowNum(), 0, 19),
+                BorderStyle.THIN, BorderExtent.ALL);
         propertyTemplate.applyBorders(sheet);
 
         // Сохранение документа
@@ -55,6 +64,7 @@ public class Ten_10_ReportService {
         System.out.println("\nМожно пробовать\n10.xls");
     }
 
+    // создание шапки таблицы
     private void nameColumn(Workbook book, Sheet sheet) {
 
         CellStyle cellHorStyle = cellStyle(book, font(book, true, 8));
@@ -112,9 +122,25 @@ public class Ten_10_ReportService {
         for (int i = 1; i < 21; i++) {
             initCell(row2.createCell(i - 1), String.valueOf(i), cellHorStyle);
         }
-
     }
 
+    // заполнение таблицы данными
+    private void filling(Workbook book, ZGAgentExpenseDTO dto) {
+        Sheet sheet = book.getSheet("3Г Отчет агента");
+
+        CellStyle styleCell = cellStyle(book, font(book, false, 8));
+
+        Row row3 = sheet.createRow(3);
+
+        List<String> total = dto.getTotal();
+
+        for (int i = 0; i < total.size(); i++) {
+            initCell(row3.createCell(i), total.get(i), styleCell);
+        }
+    }
+
+
+    // стиль шрифта
     private Font font(Workbook book, boolean bold, int fontSize) {
         Font font = book.createFont();
         font.setFontName("Arial");
@@ -123,6 +149,7 @@ public class Ten_10_ReportService {
         return font;
     }
 
+    // стиль ячейки
     private CellStyle cellStyle(Workbook book, Font font) {
         CellStyle style = book.createCellStyle();
         style.setWrapText(true);                                                                                        // перенос текста
@@ -132,11 +159,13 @@ public class Ten_10_ReportService {
         return style;
     }
 
+    // добавление текста в ячейку
     private void initCell(Cell cell, String text, CellStyle cellStyle) {
         cell.setCellValue(text);
         cell.setCellStyle(cellStyle);
     }
 
+    // добавление текста в ячейку с указанием ширины колонки
     private void initCellWidth(Sheet sheet, int wightColum, Cell cell, String text, CellStyle cellStyle) {
         sheet.setColumnWidth(cell.getColumnIndex(), wightColum * 255);
         cell.setCellValue(text);

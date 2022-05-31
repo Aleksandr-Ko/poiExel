@@ -12,7 +12,6 @@ import java.util.List;
  * ОПРЕДЕЛЕННЫМ ПО ПРОИЗВОДСТВЕННЫМ НОРМАМ»
  */
 @Data
-
 public class ZVAgentExpenseDTO {
 
     List<String> dummy = new ArrayList<>();

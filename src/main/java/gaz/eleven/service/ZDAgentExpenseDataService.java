@@ -12,7 +12,7 @@ public class ZDAgentExpenseDataService {
 
         for (int i = 0; i < 10; i++) {
             dummy.add("1");
-            if (i > 4) {
+            if (i > 5) {
                 total.add("tot");
             }
         }

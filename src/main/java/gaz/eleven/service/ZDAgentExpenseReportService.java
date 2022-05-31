@@ -123,7 +123,7 @@ public class ZDAgentExpenseReportService {
         }
 
         for (int i = 0; i < total.size(); i++) {
-            initCell(row4.createCell(i + 5), total.get(i), styleCell);
+            initCell(row4.createCell(i + 6), total.get(i), styleCell);
         }
     }
 

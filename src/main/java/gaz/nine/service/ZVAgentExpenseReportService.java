@@ -1,5 +1,6 @@
 package gaz.nine.service;
 
+import gaz.nine.dto.ZVAgentExpenseDTO;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -8,52 +9,60 @@ import org.apache.poi.ss.util.PropertyTemplate;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
-public class Nine_9_ReportService {
+public class ZVAgentExpenseReportService {
     public static void main(String[] args) throws IOException {
-        Nine_9_ReportService nine9 = new Nine_9_ReportService();
-        nine9.createReport("9.xls");
+
+        ZVAgentExpenseDTO dto = new ZVAgentExpenseDTO();
+
+        ZVAgentExpenseDataService data = new ZVAgentExpenseDataService();
+        data.getZVAgentExpenseDTO(dto);
+
+        ZVAgentExpenseReportService nine9 = new ZVAgentExpenseReportService();
+        nine9.createReport("9.xls", dto);
     }
 
-    public void createReport(String file) throws IOException {
-        // создание документа
+    public void createReport(String file, ZVAgentExpenseDTO dto) throws IOException {
+// создание документа
         Workbook book = new HSSFWorkbook();
-        // создаём лист в документе
+// создаём лист в документе
         Sheet sheet = book.createSheet("3Г Отчет агента");
 
-        // верхний колонтитул
+// верхний колонтитул
         // TODO -> возможно это лишняя запись
         sheet.getHeader().setCenter(HSSFHeader.font("Arial", "bold") + HSSFHeader.fontSize((short) 12)
                 + " 3В ОТЧЕТА АГЕНТА\n"
                 + " «О РАСХОДЕ ОСНОВНЫХ МАТЕРИАЛОВ В СТРОИТЕЛЬСТВЕ В СОПОСТАВЛЕНИИ С РАСХОДОМ,\n"
                 + " ОПРЕДЕЛЕННЫМ ПО ПРОИЗВОДСТВЕННЫМ НОРМАМ»");
 
-        // задаем отступ от края листа для печати
+// задаем отступ от края листа для печати
         sheet.setMargin(Sheet.TopMargin, 1.4);
         sheet.setMargin(Sheet.LeftMargin, 0.4);
         sheet.setMargin(Sheet.RightMargin, 0.4);
-        // устанавливаем ориентацию листа для печати (альбомная)
+// устанавливаем ориентацию листа для печати (альбомная)
         sheet.getPrintSetup().setLandscape(true);
-        // выравнивание по центру листа
+// выравнивание по центру листа
         sheet.setHorizontallyCenter(true);
-        // перенос рядов на каждый лист
+// перенос рядов на каждый лист
         sheet.setRepeatingRows(CellRangeAddress.valueOf("3"));
 
-        // наполнение документа
+// наполнение документа
         nameColumn(book, sheet);
+        filling(book, dto);
 
-        // отображение границ таблицы
+// отображение границ таблицы
         PropertyTemplate propertyTemplate = new PropertyTemplate();
-        // TODO -> заменить рисование границ на всю область данных
-        propertyTemplate.drawBorders(new CellRangeAddress(0, 4, 0, 17), BorderStyle.THIN, BorderExtent.ALL);
+        propertyTemplate.drawBorders(new CellRangeAddress(0, sheet.getLastRowNum(), 0, 17), BorderStyle.THIN, BorderExtent.ALL);
         propertyTemplate.applyBorders(sheet);
 
-        // Сохранение документа
+// Сохранение документа
         book.write(new FileOutputStream(file));
 
         System.out.println("\nМожно пробовать\n9.xls");
     }
 
+    // создание шапки таблицы
     private void nameColumn(Workbook book, Sheet sheet) {
 
         CellStyle cellHorStyle = cellStyle(book, font(book, false, 8));
@@ -61,8 +70,6 @@ public class Nine_9_ReportService {
         Row row0 = sheet.createRow(0);
         Row row1 = sheet.createRow(1);
         Row row2 = sheet.createRow(2);
-        Row row3 = sheet.createRow(3);
-        Row row4 = sheet.createRow(4);
 
         row0.setHeight((short) (2 * 255));
         row1.setHeight((short) (3 * 255));
@@ -79,14 +86,12 @@ public class Nine_9_ReportService {
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 9));
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 13));
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 14, 16));
-        sheet.addMergedRegion(new CellRangeAddress(4,4,0,1));
 
         initCell(row0.createCell(1), "Стройка", cellHorStyle);
         initCell(row0.createCell(3), "Подрядчик (место хранения)", cellHorStyle);
         initCell(row0.createCell(7), "Договор", cellHorStyle);
         initCell(row0.createCell(10), "Информация о передаче материалов\nПодрядчику СМР/Заказчику (при возврате)", cellHorStyle);
         initCell(row0.createCell(14), "Первичный документ", cellHorStyle);
-        initCell(row4.createCell(0),"ИТОГО:",cellHorStyle);
 
         initCellWidth(sheet, cellWightOne, row0.createCell(0), "№\nп/п", cellHorStyle);
         initCellWidth(sheet, cellWightOne, row0.createCell(17), "Счет\n(с/счет)\nбух.\nучета", cellHorStyle);
@@ -112,6 +117,32 @@ public class Nine_9_ReportService {
         }
     }
 
+    // заполнение таблицы данными
+    private void filling(Workbook book, ZVAgentExpenseDTO dto) {
+        Sheet sheet = book.getSheet("3Г Отчет агента");
+        CellStyle styleCell = cellStyle(book, font(book, false, 8));
+
+        sheet.addMergedRegion(new CellRangeAddress(4, 4, 0, 1));
+
+        Row row3 = sheet.createRow(3);
+        Row row4 = sheet.createRow(4);
+
+        initCell(row4.createCell(0), "ИТОГО:", styleCell);
+
+        List<String> dummy = dto.getDummy();
+        List<String> total = dto.getTotal();
+
+        for (int i = 0; i < dummy.size(); i++) {
+            initCell(row3.createCell(i), dummy.get(i), styleCell);
+        }
+
+        for (int i = 0; i < total.size(); i++) {
+            initCell(row4.createCell(i + 2), total.get(i), styleCell);
+        }
+    }
+
+
+    // стиль шрифта
     private Font font(Workbook book, boolean bold, int fontSize) {
         Font font = book.createFont();
         font.setFontName("Arial");
@@ -120,6 +151,7 @@ public class Nine_9_ReportService {
         return font;
     }
 
+    // стиль ячейки
     private CellStyle cellStyle(Workbook book, Font font) {
         CellStyle style = book.createCellStyle();
         style.setWrapText(true);                                                                                        // перенос текста
@@ -129,11 +161,13 @@ public class Nine_9_ReportService {
         return style;
     }
 
+    // добавление текста в ячейку
     private void initCell(Cell cell, String text, CellStyle cellStyle) {
         cell.setCellValue(text);
         cell.setCellStyle(cellStyle);
     }
 
+    // добавление текста в ячейку с указанием ширины колонки
     private void initCellWidth(Sheet sheet, int wightColum, Cell cell, String text, CellStyle cellStyle) {
         sheet.setColumnWidth(cell.getColumnIndex(), wightColum * 255);
         cell.setCellValue(text);

@@ -183,7 +183,7 @@ public class OpiForConstructionReportService {
         initCellWidth(sheet, columWight2 + 4, row17.createCell(15), "израсходовано ОПИ\nисходя из проектного\nобъема работ за\nотчетный период", verStyle);
         initCellWidth(sheet, columWight2 + 4, row17.createCell(16), "коэффициент (соотношение)\nобъема ОПИ в\nосновном состоянии\nи ОПИ исходя из", verStyle);
         initCellWidth(sheet, columWight2, row16.createCell(17), "Остаток ОПИ (в основном состоянии)\nна конец отчетного периода", verStyle);
-        // нумеруем колонки под наименованием
+// нумеруем колонки под наименованием
         for (int i = 1; i < 19; i++) {
             initCell(row18.createCell(i - 1), String.valueOf(i), cellStyle);
         }

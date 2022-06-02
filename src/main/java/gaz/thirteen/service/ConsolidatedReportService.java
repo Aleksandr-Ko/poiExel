@@ -1,5 +1,6 @@
 package gaz.thirteen.service;
 
+import gaz.thirteen.dto.ConsolidatedDTO;
 import org.apache.poi.hssf.usermodel.HSSFHeader;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -8,53 +9,60 @@ import org.apache.poi.ss.util.PropertyTemplate;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
-public class Thirteen_13_ReportService {
+public class ConsolidatedReportService {
     public static void main(String[] args) throws IOException {
 
-        Thirteen_13_ReportService tr = new Thirteen_13_ReportService();
-        tr.createReport("13.xls");
+        ConsolidatedDTO dto = new ConsolidatedDTO();
+
+        ConsolidatedDataService data = new ConsolidatedDataService();
+        data.getConsolidatedDTO(dto);
+
+        ConsolidatedReportService report = new ConsolidatedReportService();
+        report.createReport("13.xls", dto);
 
     }
 
-    public void createReport(String file) throws IOException {
-        // создание документа
+    // создать отчет
+    public void createReport(String file, ConsolidatedDTO dto) throws IOException {
+// создание документа
         Workbook book = new HSSFWorkbook();
-        // создаём лист в документе
+// создаём лист в документе
         Sheet sheet = book.createSheet("Сводный отчет");
-        // верхний колонтитул
+// верхний колонтитул
         sheet.getHeader().setCenter(HSSFHeader.font("Times New Roman", "") + HSSFHeader.fontSize((short) 12) + "Сводный отчет");
-        // задаем отступ от края листа для печати
+// задаем отступ от края листа для печати
         sheet.setMargin(Sheet.LeftMargin, 0.4);
         sheet.setMargin(Sheet.RightMargin, 0.4);
-        // устанавливаем ориентацию листа для печати (альбомная)
+// устанавливаем ориентацию листа для печати (альбомная)
         sheet.getPrintSetup().setLandscape(true);
-        // выравнивание по центру листа
+// выравнивание по центру листа
         sheet.setHorizontallyCenter(true);
-        // перенос рядов на каждый лист
+// перенос рядов на каждый лист
         sheet.setRepeatingRows(CellRangeAddress.valueOf("7"));
 
-        // наполнение документа
-        header(book, sheet);
+// наполнение документа
+        header(book, sheet, dto);
         nameColumn(book, sheet);
-        quarryData(book, sheet);
+        addRow(book, sheet, dto);
 
-
-        // отображение границ таблицы
+// отображение границ таблицы
         PropertyTemplate propertyTemplate = new PropertyTemplate();
-        propertyTemplate.drawBorders(new CellRangeAddress(0, 2, 17, 24),BorderStyle.THIN, BorderExtent.ALL);
-        // TODO -> заменить рисование границ на всю область данных
-        propertyTemplate.drawBorders(new CellRangeAddress(4, 18, 0, 24),BorderStyle.THIN, BorderExtent.ALL);
+        propertyTemplate.drawBorders(new CellRangeAddress(0, 2, 17, 24), BorderStyle.THIN, BorderExtent.ALL);
+        propertyTemplate.drawBorders(new CellRangeAddress(4, sheet.getLastRowNum(), 0, 24), BorderStyle.THIN, BorderExtent.ALL);
         propertyTemplate.applyBorders(sheet);
-
-        // Сохранение документа
-        book.write(new FileOutputStream(file));
+// Сохранение документа
+        FileOutputStream out = new FileOutputStream(file);
+        book.write(out);
+        out.close();
 
         System.out.println("\nМожно пробовать\n13.xls");
     }
 
-    private void header(Workbook book, Sheet sheet) {
-        // стили для ячеек
+    // создание табличного заголовка
+    private void header(Workbook book, Sheet sheet, ConsolidatedDTO dto) {
+// стили для ячеек
         CellStyle boldStyle = cellStyle(book, font(book, true, 10));
         CellStyle regularStyle = cellStyle(book, font(book, false, 10));
         CellStyle regularStyleLeft = cellStyle(book, font(book, false, 10));
@@ -82,20 +90,19 @@ public class Thirteen_13_ReportService {
         sheet.addMergedRegion(new CellRangeAddress(2, 2, 23, 24));
 
         initCell(row0.createCell(0), "Агент:", boldStyle);
-        initCell(row0.createCell(2), "Тут будет вставка организации", regularStyleLeft);
+        initCell(row0.createCell(2), dto.getAgent(), regularStyleLeft);
         initCell(row0.createCell(17), "Номер\nдокумента", regularStyle);
         initCell(row0.createCell(19), "Дата\nсоставления", regularStyle);
         initCell(row0.createCell(21), "Отчетный период", regularStyle);
-
         initCell(row1.createCell(21), "c", regularStyle);
         initCell(row1.createCell(23), "по", regularStyle);
-
-        initCell(row2.createCell(17), "?", regularStyle);
-        initCell(row2.createCell(19), "?", regularStyle);
-        initCell(row2.createCell(21), "?", regularStyle);
-        initCell(row2.createCell(23), "?", regularStyle);
+        initCell(row2.createCell(17), dto.getNumDoc(), regularStyle);
+        initCell(row2.createCell(19), dto.getDatePreparation(), regularStyle);
+        initCell(row2.createCell(21), dto.getPeriodFrom(), regularStyle);
+        initCell(row2.createCell(23), dto.getPeriodTo(), regularStyle);
     }
 
+    // наименование колонок основной таблицы
     private void nameColumn(Workbook book, Sheet sheet) {
         CellStyle regularStyle = cellStyle(book, font(book, false, 10));
         CellStyle verStyle = cellStyle(book, font(book, false, 10));
@@ -172,45 +179,98 @@ public class Thirteen_13_ReportService {
                 состоянии и ОПИ исходя из
                 проектного объема работ""", verStyle);
         initCellWidth(sheet, weightCell, row4.createCell(24), "Остаток ОПИ (в основном состоянии)\nна конец отчетного периода", verStyle);
-
+// нумеруем колонки под наименованием
         for (int i = 1; i < 26; i++) {
             initCell(row6.createCell(i - 1), String.valueOf(i), regularStyle);
         }
     }
 
-    private void quarryData(Workbook book, Sheet sheet) {
+    // вставка строк с данными и итогом
+    private void addRow(Workbook book, Sheet sheet, ConsolidatedDTO dto) {
+
         CellStyle regularStyle = cellStyle(book, font(book, false, 10));
         CellStyle verStyle = cellStyle(book, font(book, false, 10));
         verStyle.setRotation((short) 90);
 
-        Row row7 = sheet.createRow(7);
-        Row row8 = sheet.createRow(8);
-        Row row9 = sheet.createRow(9);
-        Row row10 = sheet.createRow(10);
-        Row row11 = sheet.createRow(11);
-        Row row12 = sheet.createRow(12);
-        Row row13 = sheet.createRow(13);
-        Row row14 = sheet.createRow(14);
-        Row row15 = sheet.createRow(15);
-        Row row16 = sheet.createRow(16);
-        Row row17 = sheet.createRow(17);
-        Row row18 = sheet.createRow(18);
+        addSetData(sheet, dto.getConstruction(), verStyle);
 
-        sheet.addMergedRegion(new CellRangeAddress(8, 8, 0, 14));
+        addSetDataSupply(sheet, dto.getQuarry(), regularStyle, verStyle, "по сторонним\nкарьерам");
+        addSetDataSupply(sheet, dto.getSubject(), regularStyle, verStyle, "по\nсубъектам");
+        addSetDataSupply(sheet, dto.getProvider(), regularStyle, verStyle, "по\nпоставщикам");
+        addSetDataSupply(sheet, dto.getContractor(), regularStyle, verStyle, "по\nподрядчикам");
+        addSetDataSupply(sheet, dto.getObject(), regularStyle, verStyle, "по\nобъектам");
 
-        rowNameTotal(row8, regularStyle, verStyle);
+        addSetTotal(sheet, dto.getConstructionT(),regularStyle, verStyle);
+        addSetTotal(sheet, dto.getQuarryT(),regularStyle, verStyle);
+        addSetTotal(sheet, dto.getSubjectT(),regularStyle, verStyle);
+        addSetTotal(sheet, dto.getProviderT(),regularStyle, verStyle);
+        addSetTotal(sheet, dto.getContractorT(),regularStyle, verStyle);
+        addSetTotal(sheet, dto.getObjectT(),regularStyle, verStyle);
+    }
 
-        rowTotal(sheet, regularStyle, verStyle, row9, row10, "по сторонним\nкарьерам");
-        rowTotal(sheet, regularStyle, verStyle, row11, row12, "по\nсубъектам");
-        rowTotal(sheet, regularStyle, verStyle, row13, row14, "по\nпоставщикам");
-        rowTotal(sheet, regularStyle, verStyle, row15, row16, "по\nподрядчикам");
-        rowTotal(sheet, regularStyle, verStyle, row17, row18, "по\nобъектам");
 
-        for (int i = 1; i < 26; i++) {
-            initCell(row7.createCell(i - 1), "??", verStyle);
+    // метод добавление ряда стройки
+    private void addSetData(Sheet sheet, List<String> list, CellStyle cellStyle) {
+
+        Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+
+        for (int i = 0; i < list.size(); i++) {
+            initCell(row.createCell(i), list.get(i), cellStyle);
         }
     }
 
+    // метод добавление ряда поставщиков
+    private void addSetDataSupply(Sheet sheet, List<String> list, CellStyle cellStyle, CellStyle verStyle, String text) {
+
+        Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+
+        sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, 2));
+
+        row.setHeight((short) (2 * 255));
+
+        initCell(row.createCell(0), text, cellStyle);
+
+        for (int i = 0; i < list.size(); i++) {
+            initCell(row.createCell(i+3), list.get(i), verStyle);
+        }
+    }
+
+    // метод создание итогового ряда
+    private void addSetTotal(Sheet sheet, List<String> list, CellStyle regStyle,CellStyle verStyle) {
+
+        Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+
+        initCell(row.createCell(0), "Итого", regStyle);
+        sheet.addMergedRegion(new CellRangeAddress(row.getRowNum(), row.getRowNum(), 0, 14));
+
+        for (int i = 15; i < 26; i++) {
+            if (i == 16 | i == 17 | i == 20 | i == 23 | i == 25) {
+                initCell(row.createCell(i - 1), "х", regStyle);
+            } else {
+                initCell(row.createCell(i - 1), "", verStyle);
+            }
+        }
+        initCell(row.getCell(17), list.get(0), verStyle);
+        initCell(row.getCell(18), list.get(1), verStyle);
+        initCell(row.getCell(20), list.get(2), verStyle);
+        initCell(row.getCell(21), list.get(3), verStyle);
+        initCell(row.getCell(23), list.get(4), verStyle);
+    }
+
+    // метод добавление текста в ячейку
+    private void initCell(Cell cell, String text, CellStyle cellStyle) {
+        cell.setCellValue(text);
+        cell.setCellStyle(cellStyle);
+    }
+
+    // метод добавление текста в ячейку с указанием ширины колонки
+    private void initCellWidth(Sheet sheet, int wight, Cell cell, String text, CellStyle cellStyle) {
+        sheet.setColumnWidth(cell.getColumnIndex(), wight * 256);
+        cell.setCellValue(text);
+        cell.setCellStyle(cellStyle);
+    }
+
+    // стиль шрифта
     private Font font(Workbook book, boolean bold, int fontSize) {
         Font font = book.createFont();
         font.setFontName("Times New Roman");
@@ -218,6 +278,8 @@ public class Thirteen_13_ReportService {
         font.setFontHeight((short) (fontSize * 20));
         return font;
     }
+
+    // стиль ячейки
     private CellStyle cellStyle(Workbook book, Font font) {
         CellStyle style = book.createCellStyle();
         style.setWrapText(true);                                                                                        // перенос текста
@@ -226,35 +288,4 @@ public class Thirteen_13_ReportService {
         style.setFont(font);
         return style;
     }
-
-    private void rowNameTotal(Row rowTotal, CellStyle regularStyle, CellStyle verStyle) {
-        initCell(rowTotal.createCell(0), "Итого", regularStyle);
-        for (int i = 15; i < 26; i++) {
-            if (i == 16 | i == 17 | i == 20 | i == 23 | i == 25) {
-                initCell(rowTotal.createCell(i - 1), "х", regularStyle);
-            } else {
-                initCell(rowTotal.createCell(i - 1), "", verStyle);
-            }
-        }
-    }
-    private void rowTotal(Sheet sheet, CellStyle cellRegularStyle, CellStyle cellVerStyle, Row rowName, Row rowTotal, String text) {
-        sheet.addMergedRegion(new CellRangeAddress(rowName.getRowNum(), rowName.getRowNum(), 0, 2));
-        sheet.addMergedRegion(new CellRangeAddress(rowTotal.getRowNum(), rowTotal.getRowNum(), 0, 14));
-        rowName.setHeight((short) (2 * 255));
-        initCell(rowName.createCell(0), text, cellRegularStyle);
-        rowNameTotal(rowTotal, cellRegularStyle, cellVerStyle);
-    }
-
-    private void initCell(Cell cell, String text, CellStyle cellStyle) {
-        cell.setCellValue(text);
-        cell.setCellStyle(cellStyle);
-    }
-
-    private void initCellWidth(Sheet sheet, int wight, Cell cell, String text, CellStyle cellStyle) {
-        sheet.setColumnWidth(cell.getColumnIndex(), wight * 256);
-        cell.setCellValue(text);
-        cell.setCellStyle(cellStyle);
-    }
-
-
 }

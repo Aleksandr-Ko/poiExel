@@ -97,8 +97,8 @@ public class SupplyMineralReportService {
         initCell(row0.createCell(0), "Инвестпроект", horStyle);
         initCell(row1.createCell(0), "Наименование", horStyle);
         initCell(row1.createCell(7), "Код (шифр)", horStyle);
-        initCell(row2.createCell(0), "", horStyle);                                                          // нужно уточнить что сюда вставлять?
-        initCell(row2.createCell(7), "", horStyle);                                                          // нужно уточнить что сюда вставлять?
+        initCell(row2.createCell(0), dto.getNameInvestProject(), horStyle);
+        initCell(row2.createCell(7), dto.getCodeInvestProject(), horStyle);
         initCell(row4.createCell(0), "Субподрядный договор на добычу ОПИ, с видом работ «добыча ОПИ на карьере»", horStyle);
         initCell(row4.createCell(3), "Карьер", horStyle);
         initCell(row4.createCell(5), "ОКС", horStyle);

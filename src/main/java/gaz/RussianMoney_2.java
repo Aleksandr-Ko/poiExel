@@ -147,14 +147,19 @@ public class RussianMoney_2 {
             if (ri > 99) o += str100[r1] + " "; // Сотни
             if (r22 > 20) {// >20
                 o += str10[r2] + " ";
-                o += sex[sexi][r3] + " ";
+                if (lev > 1) {
+                    o += sex[sexi][r3] + " ";
+                } else {
+                    o += sex[sexi][r3] + ") ";
+                }
+
             } else { // <=20
                 if (r22 > 9) o += str11[r22 - 9] + " "; // 10-20
-                else o += sex[sexi][r3] + " "; // 0-9
-            }
-
-            if (lev == 1){
-
+                if (lev > 1) {
+                    o += sex[sexi][r3] + " "; // 0-9
+                } else {
+                    o += sex[sexi][r3] + ") "; // 0-9
+                }
             }
 
 // Единицы измерения (рубли...)
@@ -162,10 +167,7 @@ public class RussianMoney_2 {
             lev--;
         }
 
-
-
-
-
+        o = "(" + o;
 
 // Копейки в цифровом виде
         if (stripkop) {

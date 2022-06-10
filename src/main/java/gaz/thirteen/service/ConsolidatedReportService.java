@@ -26,33 +26,33 @@ public class ConsolidatedReportService {
 
     // создать отчет
     public void createReport(String file, ConsolidatedDTO dto) throws IOException {
-// создание документа
+        // создание документа
         Workbook book = new HSSFWorkbook();
-// создаём лист в документе
+        // создаём лист в документе
         Sheet sheet = book.createSheet("Сводный отчет");
-// верхний колонтитул
+        // верхний колонтитул
         sheet.getHeader().setCenter(HSSFHeader.font("Times New Roman", "") + HSSFHeader.fontSize((short) 12) + "Сводный отчет");
-// задаем отступ от края листа для печати
+        // задаем отступ от края листа для печати
         sheet.setMargin(Sheet.LeftMargin, 0.4);
         sheet.setMargin(Sheet.RightMargin, 0.4);
-// устанавливаем ориентацию листа для печати (альбомная)
+        // устанавливаем ориентацию листа для печати (альбомная)
         sheet.getPrintSetup().setLandscape(true);
-// выравнивание по центру листа
+        // выравнивание по центру листа
         sheet.setHorizontallyCenter(true);
-// перенос рядов на каждый лист
+        // перенос рядов на каждый лист
         sheet.setRepeatingRows(CellRangeAddress.valueOf("7"));
 
-// наполнение документа
+        // наполнение документа
         header(book, sheet, dto);
         nameColumn(book, sheet);
         addRow(book, sheet, dto);
 
-// отображение границ таблицы
+        // отображение границ таблицы
         PropertyTemplate propertyTemplate = new PropertyTemplate();
         propertyTemplate.drawBorders(new CellRangeAddress(0, 2, 17, 24), BorderStyle.THIN, BorderExtent.ALL);
         propertyTemplate.drawBorders(new CellRangeAddress(4, sheet.getLastRowNum(), 0, 24), BorderStyle.THIN, BorderExtent.ALL);
         propertyTemplate.applyBorders(sheet);
-// Сохранение документа
+        // Сохранение документа
         FileOutputStream out = new FileOutputStream(file);
         book.write(out);
         out.close();
@@ -62,10 +62,10 @@ public class ConsolidatedReportService {
 
     // создание табличного заголовка
     private void header(Workbook book, Sheet sheet, ConsolidatedDTO dto) {
-// стили для ячеек
-        CellStyle boldStyle = cellStyle(book, font(book, true, 10));
-        CellStyle regularStyle = cellStyle(book, font(book, false, 10));
-        CellStyle regularStyleLeft = cellStyle(book, font(book, false, 10));
+        // стили для ячеек
+        CellStyle boldStyle = cellStyle(book, font(book, true));
+        CellStyle regularStyle = cellStyle(book, font(book, false));
+        CellStyle regularStyleLeft = cellStyle(book, font(book, false));
         regularStyleLeft.setAlignment(HorizontalAlignment.LEFT);
 
         Row row0 = sheet.createRow(0);
@@ -104,8 +104,8 @@ public class ConsolidatedReportService {
 
     // наименование колонок основной таблицы
     private void nameColumn(Workbook book, Sheet sheet) {
-        CellStyle regularStyle = cellStyle(book, font(book, false, 10));
-        CellStyle verStyle = cellStyle(book, font(book, false, 10));
+        CellStyle regularStyle = cellStyle(book, font(book, false));
+        CellStyle verStyle = cellStyle(book, font(book, false));
         verStyle.setRotation((short) 90);
 
         int weightCell = 9;
@@ -179,7 +179,7 @@ public class ConsolidatedReportService {
                 состоянии и ОПИ исходя из
                 проектного объема работ""", verStyle);
         initCellWidth(sheet, weightCell, row4.createCell(24), "Остаток ОПИ (в основном состоянии)\nна конец отчетного периода", verStyle);
-// нумеруем колонки под наименованием
+        // нумеруем колонки под наименованием
         for (int i = 1; i < 26; i++) {
             initCell(row6.createCell(i - 1), String.valueOf(i), regularStyle);
         }
@@ -188,8 +188,8 @@ public class ConsolidatedReportService {
     // вставка строк с данными и итогом
     private void addRow(Workbook book, Sheet sheet, ConsolidatedDTO dto) {
 
-        CellStyle regularStyle = cellStyle(book, font(book, false, 10));
-        CellStyle verStyle = cellStyle(book, font(book, false, 10));
+        CellStyle regularStyle = cellStyle(book, font(book, false));
+        CellStyle verStyle = cellStyle(book, font(book, false));
         verStyle.setRotation((short) 90);
 
         addSetData(sheet, dto.getConstruction(), verStyle);
@@ -271,11 +271,11 @@ public class ConsolidatedReportService {
     }
 
     // стиль шрифта
-    private Font font(Workbook book, boolean bold, int fontSize) {
+    private Font font(Workbook book, boolean bold) {
         Font font = book.createFont();
         font.setFontName("Times New Roman");
         font.setBold(bold);
-        font.setFontHeight((short) (fontSize * 20));
+        font.setFontHeight((short) (10 * 20));
         return font;
     }
 

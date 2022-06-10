@@ -3,12 +3,11 @@ package gaz.six.service;
 import gaz.six.dto.ObtainOPIDTO;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 public class ObtainOPIDataService {
 
-    public ObtainOPIDTO getObtainOPIDTO() {
+    public ObtainOPIDTO getObtainOPIDTO(ObtainOPIDTO dto) {
 // заглушка с датой
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
@@ -19,7 +18,7 @@ public class ObtainOPIDataService {
 // формат даты
         SimpleDateFormat dfFull = new SimpleDateFormat("dd MMMM yyyy г.");
 
-        ObtainOPIDTO dto = new ObtainOPIDTO();
+//        ObtainOPIDTO dto = new ObtainOPIDTO();
 
         dto.setCity("Санкт-Петербург");
         dto.setContractorPost("заместителя начальника управления исполнения договоров подготовки производства "
@@ -33,6 +32,13 @@ public class ObtainOPIDataService {
         dto.setContractDate("04 декабря 2017");
         dto.setContractNum("ОПИ-51");
         dto.setPeriodRequest("c " + dfFull.format(from) + " по " + dfFull.format(to));
+
+        List<String>ls = dto.getDummy();
+
+        for (int i = 0; i < 9; i++) {
+            ls.add("" + i);
+        }
+
 
 // TODO ->  какую дату выводить? (запрос, составления или отчетного периода)
         dto.setDateRequest(now);

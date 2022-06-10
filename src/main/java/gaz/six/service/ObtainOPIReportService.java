@@ -11,29 +11,31 @@ import java.util.List;
 
 public class ObtainOPIReportService {
     public static void main(String[] args) throws IOException {
+        ObtainOPIDTO dto = new ObtainOPIDTO();
+
         ObtainOPIReportService report = new ObtainOPIReportService();
-        report.updateDocument();
+        report.updateDocument(dto);
     }
 
-    public void updateDocument() throws IOException {
-// обращение к сервисам
+    public void updateDocument(ObtainOPIDTO dto) throws IOException {
+        // обращение к сервисам
         ObtainOPIDataService obtainData = new ObtainOPIDataService();
-        ObtainOPIDTO obtainDTO = obtainData.getObtainOPIDTO();
-// путь и имя шаблону
+        ObtainOPIDTO obtainDTO = obtainData.getObtainOPIDTO(dto);
+        // путь и имя шаблону
         ClassPathResource f = new ClassPathResource("templateWord/ObtainOPI.docx");
         String outBasic = "new_ObtainOPI.docx";
-// чтение документа и запись документа
+        // чтение документа и запись документа
         try (XWPFDocument doc = new XWPFDocument(f.getInputStream());
              FileOutputStream out = new FileOutputStream(outBasic)) {
 
-// изменение документа
+        // изменение документа
             paragraph(doc, obtainDTO);
             updateInCell(doc, obtainDTO);
             addTextCell(doc, obtainDTO);
             addRow(doc);
 
 
-// сохранение документа
+        // сохранение документа
             doc.write(out);
         }
         System.out.println("\n \\\\ new_ObtainOPI //");
@@ -41,7 +43,7 @@ public class ObtainOPIReportService {
 
     // изменение текста
     private void paragraph(XWPFDocument doc, ObtainOPIDTO dto) {
-// формат даты
+        // формат даты
         SimpleDateFormat dfMY = new SimpleDateFormat(" MMMM yyyy г.");
 
         List<XWPFParagraph> listParagraph = doc.getParagraphs();
@@ -55,7 +57,7 @@ public class ObtainOPIReportService {
                         .replace("costWorkTotal", dto.getCostWorkTotal())
                         .replace("costWorkNDS", dto.getCostWorkNDS())
                         .replace("costWork", dto.getCostWork())
-// TODO -> какую дату выводить? (запрос, составления или отчетного периода)
+        // TODO -> какую дату выводить? (запрос, составления или отчетного периода)
                         .replace("dateRequest", dfMY.format(dto.getDateRequest()))
                         .replace("contractDate", dto.getContractDate())
                         .replace("contractNum", dto.getContractNum())

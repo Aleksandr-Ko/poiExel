@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.*;
 
 /**
  * Отчет Подрядчика о приобретении ОПИ (Материалов)
@@ -35,5 +35,7 @@ public class ObtainOPIDTO {
     private String numDateContr;        // Номер и дата договора/ соглашения
     private String termContr;           // Срок действия договора/ соглашения
     private String subjectContr;        // Предмет договора, существенные условия договора/ соглашения
+
+    private List<String> dummy = new ArrayList<>();
 
 }

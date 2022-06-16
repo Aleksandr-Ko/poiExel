@@ -141,12 +141,16 @@ public class RussianMoney_2 {
                     o += sex[sexi][r3] + ") ";
                 }
             } else { // <=20
+
                 if (lev > 1) {
                     if (r22 > 9) o += str11[r22 - 9] + " "; // 10-20
                     else o += sex[sexi][r3] + " "; // 0-9
-                }  else {
+                } else {
                     if (r22 > 9) o += str11[r22 - 9] + ") "; // 10-20
-                    else o += sex[sexi][r3] + ") "; // 0-9
+                    else {
+                        o = delSpace(o);
+                        o += sex[sexi][r3]; // 0-9
+                    }
                 }
             }
 // Единицы измерения (рубли...)
@@ -182,4 +186,15 @@ public class RussianMoney_2 {
         if (n1 == 1) return f1;
         return f5;
     }
+    public String delSpace(String text){
+        String result = "";
+        char[] temp = text.toCharArray();
+        for (int i = 0; i < temp.length-1; i++) {
+            result += temp[i];
+            if (i == temp.length-2) result += ") ";
+        }
+
+        return result;
+    }
+
 }

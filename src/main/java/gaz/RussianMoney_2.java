@@ -17,6 +17,7 @@ public class RussianMoney_2 {
      */
     private final BigDecimal amount;
 
+
     /**
      * Конструктор
      */
@@ -45,8 +46,17 @@ public class RussianMoney_2 {
      * Вернуть сумму в рублях без копеек.
      */
     public String asNumber() {
-        long n = amount.longValue();
-        return String.valueOf(n);
+        long num = amount.longValue();
+        String nu = String.valueOf(num);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < nu.length(); i++) {
+            long seg = (long) (num/Math.pow(10,i));
+            if (i % 3 == 0) {
+                sb.insert(0, " ");
+            }
+                sb.insert(0, seg % 10);
+        }
+        return sb.toString();
     }
 
     List<String> listNumSp = new ArrayList<>();
@@ -90,8 +100,11 @@ public class RussianMoney_2 {
 
         // Разбиватель суммы на сегменты по 3 цифры с конца
         ArrayList segments = new ArrayList();
+
         while (rub_tmp > 999) {
+
             long seg = rub_tmp / 1000;
+
             segments.add(rub_tmp - (seg * 1000));
             listNumSp.add(String.valueOf(rub_tmp - (seg * 1000)));
             listNumSp.add(" ");
@@ -135,24 +148,14 @@ public class RussianMoney_2 {
 
             if (r22 > 20) {// >20
                 o += str10[r2] + " ";
-                if (lev > 1) {
-                    o += sex[sexi][r3] + " ";
-                } else {
-                    o += sex[sexi][r3] + ") ";
-                }
+                o += sex[sexi][r3] + " ";
             } else { // <=20
-
-                if (lev > 1) {
-                    if (r22 > 9) o += str11[r22 - 9] + " "; // 10-20
-                    else o += sex[sexi][r3] + " "; // 0-9
-                } else {
-                    if (r22 > 9) o += str11[r22 - 9] + ") "; // 10-20
-                    else {
-                        o = delSpace(o);
-                        o += sex[sexi][r3]; // 0-9
-                    }
-                }
+                if (r22 > 9) o += str11[r22 - 9] + " "; // 10-20
+                else o += sex[sexi][r3] + " "; // 0-9
             }
+
+            if (lev == 1) o = addHooks(o);
+
 // Единицы измерения (рубли...)
             o += morph(ri, forms[lev][0], forms[lev][1], forms[lev][2]) + " ";
             lev--;
@@ -165,7 +168,7 @@ public class RussianMoney_2 {
             o = o + "" + kops + " " + morph(kop, forms[0][0], forms[0][1], forms[0][2]);
             o = o.replaceAll(" {2,}", " ");
         }
-        return "(" + o;
+        return o;
     }
 
 
@@ -186,15 +189,17 @@ public class RussianMoney_2 {
         if (n1 == 1) return f1;
         return f5;
     }
-    public String delSpace(String text){
+
+    public String addHooks(String text) {
         String result = "";
+        char sp = 32;
+        text = text.replaceAll("\\s+$", "");
         char[] temp = text.toCharArray();
-        for (int i = 0; i < temp.length-1; i++) {
+        for (int i = 0; i < temp.length; i++) {
+            if (i == 0) result += "(";
             result += temp[i];
-            if (i == temp.length-2) result += ") ";
+
         }
-
-        return result;
+        return result + ") ";
     }
-
 }
